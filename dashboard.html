@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>My healthy plate</title>
+</head>
+<body>
+  <div class="container flex-wrapper">
+    <div class="sidebar">
+      <a href="./index.html" class="logo"><img src="img/logo.svg" alt="My healthy plate logo"></a>
+      <ul class="nav">
+        <li>
+          <a href="#" class="nav__item nav__item_active">
+            <div class="icon-wrapper">
+              <img src="./img/overview-light.svg">
+            </div>          
+            Overview
+          </a>
+        </li>
+        <li>
+          <a href="./dashboard.html" class="nav__item">
+            <div class="icon-wrapper">
+              <img src="./img/recipes-dark.svg">
+            </div>
+            Recipes
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav__item">
+            <div class="icon-wrapper">
+              <img src="./img/meal-dark.svg">
+            </div>
+            Meal plan             
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav__item">
+            <div class="icon-wrapper">
+              <img src="./img/settings-dark.svg">
+            </div>
+            Settings
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="page-content">
+      <header class="authorized-page-header">
+        <div class="greeting">
+          <h3 class="greeting__header">Hello, Lena!</h3>
+          <div class="greeting__text">Let`s plan your meal for today!</div>
+        </div>
+        <a href="./index.html" class="button button_logout">Log Out</a>
+      </header>
+      <main class="main">
+        <section class="recipes">
+          <div class="recipe">
+            <div class="recipe__image"></div>
+            <h3 class="recipe__title">Orange soup</h3>
+            <div class="recipe__info">
+              <div class="recipe__time">1h 25m</div>
+              <div class="recipe__difficulty">
+                <img src="img/star.png">
+                <img src="img/star.png">
+                <img src="img/star.png">
+              </div>
+            </div>
+          </div>
+          <div class="recipe">
+            <div class="recipe__image"></div>
+            <h3 class="recipe__title">Orange soup</h3>
+            <div class="recipe__info">
+              <div class="recipe__time">1h 25m</div>
+              <div class="recipe__difficulty">
+                <img src="img/star.png">
+                <img src="img/star-bw.png">
+                <img src="img/star-bw.png">
+              </div>
+            </div>
+          </div>
+          <div class="recipe">
+            <div class="recipe__image"></div>
+            <h3 class="recipe__title">Orange soup</h3>
+            <div class="recipe__info">
+              <div class="recipe__time">1h 25m</div>
+              <div class="recipe__difficulty">
+                <img src="img/star.png">
+                <img src="img/star.png">
+                <img src="img/star-bw.png">
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="flex-wrapper">
+          <div class="statistics">
+            <h3 class="statistics__header">Macronutrient targets</h3>
+            <div class="statistics__data macronutrients"></div>
+          </div>
+          <div class="statistics">
+            <h3 class="statistics__header">Today`s meal plan</h3>
+            <div class="statistics__data meal-plan">
+              <ul class="meals-list">
+                <li class="meals-list__item">
+                  <div class="meal__title"> Meal #1</div>
+                  <ul class="meal__products">
+                    <li class="products__item">Oatmeal with bananas and strawberries</li>
+                    <li class="products__item">Green tea</li>
+                  </ul>
+                </li>
+                <li class="meals-list__item">
+                  <div class="meal__title"> Meal #2</div>
+                  <ul class="meal__products">
+                    <li class="products__item">Soup</li>
+                    <li class="products__item">Spaghetti</li>
+                    <li class="products__item">Falafels</li>
+                    <li class="products__item">Green tea</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="calendar"></div>
+        </section>
+        <div class="statistics">
+          <h3 class="statistics__header">Today`s products</h3>
+          <div class="statistics__data products">
+            <table>
+              <tr class="products-table__header">
+                <th class="column-title column-data">#</th>
+                <th class="column-title column-data">product</th>
+                <th class="column-title column-data">count (g)</th>
+                <th class="column-title column-data">proteins (g)</th>
+                <th class="column-title column-data">fats (g)</th>
+                <th class="column-title column-data">carbohydrates (g)</th>
+                <th class="column-title column-data">energy (kcal)</th>
+              </tr>
+              <tr class="products-table__row">
+                <td class="column-data"><div class="column-data_number">1</div></td>
+                <td class="column-data column-data_product">Apple</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+              </tr>
+              <tr class="products-table__row">
+                <td class="column-data"><div class="column-data_number">1</div></td>
+                <td class="column-data column-data_product">Apple</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+                <td class="column-data">100</td>
+              </tr>
+            </table>
+            <button class="button button_add"></button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

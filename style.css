@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --main-color: #131123;
+  --button-primary-color: #FF9053;
+  --nav-color: #F5F7F9;
+  --border-color: #E7EAE9;
+  --recipe-background: #E1E2F6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: var(--main-color);
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: var(--nav-color);
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: 44px;
+  padding: 12px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--main-color);
+  text-decoration: none;
+  transition: all 0.1s ease;
+}
+
+.button:hover {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
+
+.button_color_primary {
+  background-color: var(--button-primary-color);
+  color: #fff;
+}
+
+
+.button_color_primary:hover {
+  background-color: hsl(21, 100%, 75%);
+}
+
+.main__header {
+  font-weight: 800;
+  font-size: 3.5em;
+  padding-top: 80px;
+}
+
+.main__button {
+  margin-top: 30px;
+  font-weight: 700;
+}
+
+.main-page__main {
+  background: url(img/food.png) no-repeat 90%;
+  background-size: contain;
+  padding-bottom: 40px;
+}
+
+.footer {
+  margin-top: 100px;
+  padding: 20px 0;
+}
+
+.copyright {
+  text-align: center;
+}
+
+.form {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.form__button {
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.form__header {
+  text-align: center;
+}
+
+.form__item {
+  margin-bottom: 12px;
+}
+
+.form__item:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.input {
+  display: block;
+  width: 330px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  outline: none;
+}
+
+.input {
+  margin-bottom: 20px;
+}
+
+.input::placeholder {
+  color: #85878D;
+}
+
+input:focus {
+  border: 1px solid #66686d;
+}
+
+
+.form__item_inline {
+  width: auto;
+  display: inline;
+}
+
+.section__header {
+  margin-top: 30px;
+}
+
+.flex-wrapper {
+  display: flex;
+  padding: 0;
+}
+
+.sidebar {
+  width: 280px;
+  padding: 20px 30px;
+  background-color: var(--nav-color);
+}
+
+.nav {
+  padding: 0;
+  margin-top: 35px;
+}
+
+.nav > li {
+  list-style: none;
+}
+
+.nav__item {
+  display: flex;
+  align-items: center;
+  width: 220px;
+  padding: 12px 16px;
+  border-radius: 11px;
+  text-decoration: none;
+  color: var(--main-color);
+  border: 1px solid transparent;
+}
+
+.nav__item:hover {
+  border: 1px solid var(--border-color);
+}
+
+.icon-wrapper {
+  width: 45px;
+}
+
+.nav__item_active {
+  background-color: #131123;
+  color: #fff;
+}
+
+.nav__item_active:hover {
+  border: 1px solid transparent; 
+}
+
+.button_logout::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-right: 3px;
+  background-image: url("img/logout.svg");
+  background-repeat: no-repeat;
+}
+
+.page-content {
+  width: 100%;
+  padding: 20px 30px;
+}
+
+.authorized-page-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.greeting__header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 1.5em;
+}
+
+.greeting__text {
+  font-size: 0.9em;
+  color: #85878D;
+}
+
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.recipe {
+  width: 240px;
+  margin-top: 30px;
+  padding: 8px;
+  background: var(--recipe-background);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.recipe:hover {
+  transform: scale(1.01);
+}
+
+.recipe__image {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin-top: 24px;
+  margin-left: 18px;
+  border: 3px solid #F5F7F9;
+  border-radius: 100%;
+  background-image: url("img/orange-soup.jpg");
+  background-size: cover;
+}
+
+.recipe__title {
+  margin-top: 20px;
+  margin-left: 18px;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.recipe__info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 13px;
+  padding: 12px 24px;
+  background: #FCF9FF url("img/divider.svg") center no-repeat;
+  border-radius: 11px;
+}
+
+.recipe__time {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+}
+
+.recipe__time::before {
+  content: "";
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin-right: 8px;
+  background-image: url("img/timer.svg");
+  background-repeat: no-repeat;
+}
+
+.recipe__difficulty {
+  display: flex;
+  align-items: center;
+}
+
+.recipe__difficulty > img {
+  width: 16px;
+  margin-right: 2px;
+}
+
+.statistics {
+  margin-top: 27px;
+}
+
+.statistics__header {
+  margin-bottom: 18px;
+}
+
+.statistics__data {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.macronutrients {  
+  width: 452px;
+  margin-right: 18px;
+}
+
+.meal-plan {
+  width: 288px;
+}
+
+.meals-list__item {
+  margin-top: 10px;
+  list-style-type: none;
+}
+
+.products__item {
+  margin-top: 5px;
+}
+
+.meal__title {
+  display: flex;
+  align-items: center;
+}
+
+.meal__title::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  background: url("img/meal.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.products-table__header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.column-data {  
+  padding: 15px;
+  font-weight: 500;
+  color: #676767;
+}
+
+.column-data_product {
+  color: var(--main-color);
+}
+
+.column-title {
+  text-align: left;
+  text-transform: uppercase;
+  color: #84868A;
+}
+
+.column-data_number {
+  padding: 7px 10px;
+  background: #F5F7FB;
+  border-radius: 5px;
+}
+
+.button_add {
+  width: 45px;
+  height: 45px;
+  margin: 15px;
+  background: url("img/plus.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.button_add-recipe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_add-recipe::before {
+  content: "";
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin-right: 10px;
+  background: url("img/plus.svg");
+  background-repeat: no-repeat;
+}
+
+.filter__header {
+  margin-top: 37px;
+}
+
+.filter__select {
+  width: 200px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  outline: none;
+}
+
+.recipe-page {
+  border: 1px solid var(--border-color);
+}
+
+.recipe-page__header {
+  height: 200px;
+  background: var(--recipe-background), url("img/orange-soup.jpg") right no-repeat;
+}
