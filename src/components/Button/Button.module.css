@@ -1,0 +1,28 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: 44px;
+  padding: 12px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--main-color);
+  text-decoration: none;
+  transition: all 0.1s ease;
+}
+
+.button:hover {
+  background-color: #f9fafb;
+  cursor: pointer;
+}
+
+.button_color_primary {
+  background-color: var(--button-primary-color);
+  color: #fff;
+}
+
+
+.button_color_primary:hover {
+  background-color: hsl(21, 100%, 75%);
+}

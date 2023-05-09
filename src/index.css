@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --main-color: #131123;
+  --button-primary-color: #FF9053;
+  --nav-color: #F5F7F9;
+  --border-color: #E7EAE9;
+  --recipe-background: #E1E2F6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: var(--main-color);
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.flex-wrapper {
+  display: flex;
+  padding: 0;
+}

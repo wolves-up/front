@@ -1,0 +1,16 @@
+.main__button {
+  margin-top: 30px;
+  font-weight: 700;
+}
+
+.main {
+  background: url(./res/food.png) no-repeat 90%;
+  background-size: contain;
+  padding-bottom: 40px;
+}
+
+.main__header {
+  font-weight: 800;
+  font-size: 3.5em;
+  padding-top: 80px;
+}
