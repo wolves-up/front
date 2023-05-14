@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.greeting__header {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 1.5em;
+}
+
+.greeting__text {
+  font-size: 0.9em;
+  color: #85878D;
+}

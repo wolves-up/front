@@ -1,4 +1,4 @@
-import Button from "../Button/Button";
+import ButtonLink from "../ButtonLink/ButtonLink";
 import styles from './Main.module.css';
 
 const Main = () => {
@@ -12,13 +12,13 @@ const Main = () => {
         <div>
           Plan your diet. Achieve nutrients goals. Make own recipes.
         </div>
-        <Button
+        <ButtonLink
           className={styles.main__button}
           link='/signup'
-          isPrimary={true}
+          variant={{isPrimary: true}}
         >
           Join us!
-        </Button>
+        </ButtonLink>
       </div>
   );
 }

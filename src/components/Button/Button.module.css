@@ -5,11 +5,13 @@
   width: fit-content;
   height: 44px;
   padding: 12px 20px;
+  background-color: transparent;
   border: 1px solid var(--border-color);
   border-radius: 12px;
   color: var(--main-color);
   text-decoration: none;
   transition: all 0.1s ease;
+  font-size: inherit;
 }
 
 .button:hover {
@@ -25,4 +27,75 @@
 
 .button_color_primary:hover {
   background-color: hsl(21, 100%, 75%);
+}
+
+.button_logout::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-right: 3px;
+  background-image: url("./res/logout.svg");
+  background-repeat: no-repeat;
+}
+
+.button_disabled {
+  background-color: hsl(21, 100%, 75%);;
+}
+
+.button_addRecipe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 240px;
+  height: auto;
+  min-height: 192px;
+  margin-top: 30px;
+  padding: 8px;
+  background: var(--recipe-background);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.button_addRecipe:hover {
+  transform: scale(1.01);
+  background: var(--recipe-background);
+}
+
+.button_addRecipe::before {
+  content: "";
+  display: block;
+  width: 17px;
+  height: 17px;
+  margin-right: 10px;
+  background: url("res/plus.svg");
+  background-repeat: no-repeat;
+}
+
+.button_crud {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+
+}
+
+.button_remove {
+  background-image: url("res/remove.png");
+}
+
+.button_accept {
+  background-image: url("res/accept.png");
+}
+
+.button_edit {
+  background-image: url("res/edit.png");
+}
+
+.button_add {
+  background-image: url("res/add.png");
 }

@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../redux/user/userSlice";
 import { Navigate } from "react-router-dom";
 import NavBar from "../components/NavBar/NavBar";
+import HeaderAuth from "../components/HeaderAuth/HeaderAuth";
 
 const RequireAuth = ({children}) => {
   const user = useSelector(selectUser);
@@ -11,7 +12,10 @@ const RequireAuth = ({children}) => {
   return (
     <div className="container flex-wrapper">
       <NavBar />
-      {children}
+      <div class="page-content">
+        <HeaderAuth />
+        {children}
+      </div>
     </div>
   );
 }

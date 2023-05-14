@@ -1,0 +1,62 @@
+.recipe {
+  width: 240px;
+  margin-top: 30px;
+  padding: 8px;
+  background: var(--recipe-background);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.recipe:hover {
+  transform: scale(1.01);
+}
+
+.recipe__image {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin-top: 24px;
+  margin-left: 18px;
+  border: 3px solid #F5F7F9;
+  border-radius: 100%;
+  background-image: url("res/breakfast.png");
+  background-size: cover;
+}
+
+.recipe__title {
+  margin-top: 20px;
+  margin-left: 18px;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.recipe__info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 13px;
+  padding: 12px 24px;
+  background: #FCF9FF url("./res/divider.svg") center no-repeat;
+  border-radius: 11px;
+}
+
+.recipe__time {
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+}
+
+.recipe__time::before {
+  content: "";
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin-right: 8px;
+  background-image: url("./res/timer.svg");
+  background-repeat: no-repeat;
+}
+
+.recipe__difficulty {
+  display: flex;
+  align-items: center;
+}

@@ -14,6 +14,7 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
     try {
       const userAuth = await signInWithEmailAndPassword(auth, email, password);
       try {
@@ -58,6 +59,7 @@ const LoginForm = () => {
     } catch(err) {
       setError('Invalid email or password');
     };
+    setLoading(false);
   }
 
   return (
@@ -86,7 +88,13 @@ const LoginForm = () => {
           onChange={handlePasswordChange}
         />
 
-        <Button className={cn(styles.form__button)} isPrimary>LOG IN</Button>
+        <Button 
+          className={styles.form__button} 
+          variant={{isPrimary: true}}
+          disabled={loading}
+        >
+          LOG IN
+        </Button>
 
         { error && <div className={styles.error}>{ error }</div> }
       </Form>

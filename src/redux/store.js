@@ -3,6 +3,7 @@ import userSlice from './user/userSlice';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+import recipesSlice from './recipes/recipesSlice';
 
 const persistConfig = {
   key: 'root',
@@ -11,6 +12,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({ 
   user: userSlice,
+  recipes: recipesSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

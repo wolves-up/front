@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, deleteUser } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,7 @@ const SignupForm = () => {
   const [birthDate, setBirthDate] = useState('2000-01-01');
   const [height, setHeight] = useState(170);
   const [weight, setWeight] = useState(60);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const SignupForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     if (!passwordIsValid(password)) {
       setError(invalidPasswordErrorMessage);
@@ -81,24 +83,24 @@ const SignupForm = () => {
           height: +height,
           weight: +weight
         });
-        dispatch(login({
-          email: userAuth.user.email,
-          id: userAuth.user.uid,
-          name: nameToStore,
-          isMale,
-          birthDate,
-          height: +height,
-          weight: +weight
-        }));
-        setError('');
-        navigate('/dashboard');
       } catch(err) {
-        deleteUser(auth.currentUser);
-        setError('An error ocurred');
+        console.log(err);
       }
+      dispatch(login({
+        email: userAuth.user.email,
+        id: userAuth.user.uid,
+        name: nameToStore,
+        isMale,
+        birthDate,
+        height: +height,
+        weight: +weight
+      })); 
+      setError('');
+      navigate('/dashboard');
     } catch(err) {
       setError('An error ocurred');
     };
+    setLoading(false);
   }
 
   return (
@@ -197,7 +199,13 @@ const SignupForm = () => {
         onChange={handleWeightChange}
       />
 
-      <Button className={cn(styles.form__button)} isPrimary>SIGN UP</Button>
+      <Button 
+        className={styles.form__button} 
+        variant={{isPrimary: true}}
+        disabled={loading}
+      >
+        SIGN UP
+      </Button>
 
       { error && <div className={styles.error}>{ error }</div> }
     </Form>

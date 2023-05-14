@@ -20,6 +20,11 @@ body {
   color: var(--main-color);
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .container {
   max-width: 1440px;
   margin: 0 auto;
@@ -29,4 +34,16 @@ body {
 .flex-wrapper {
   display: flex;
   padding: 0;
+}
+
+.flex-wrapper_centered {
+  display: flex;
+  padding: 0;
+  align-items: center;
+}
+
+.page-content {
+  width: 100%;
+  margin-left: 280px;
+  padding: 20px 30px;
 }
