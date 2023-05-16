@@ -1,6 +1,13 @@
 .item {
   display: flex;
+  align-items: center;
   gap: 5px;
-  height: 20px;
+  height: 25px;
   margin-bottom: 5px;
+}
+
+.input {
+  height: 25px;
+  outline: none;
+  border: 1px solid var(--border-color);
 }

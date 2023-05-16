@@ -28,4 +28,5 @@
 
 .nav__item_active:hover {
   border: 1px solid transparent; 
+  color: #fff;
 }

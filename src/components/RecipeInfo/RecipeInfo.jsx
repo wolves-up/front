@@ -3,10 +3,12 @@ import { minutesToHoursMinutesString } from '../../utils/converters';
 import EditableListItem from '../EditableListItem/EditableListItem';
 import styles from './RecipeInfo.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRecipes, updateRecipe } from '../../redux/recipes/recipesSlice';
+import { deleteRecipe, selectRecipes, updateRecipe } from '../../redux/recipes/recipesSlice';
 import { useState } from 'react';
 import Button from '../Button/Button';
 import { uid } from 'uid';
+import Modal from 'react-bootstrap/Modal';
+import cn from 'classnames';
 
 const RecipeInfo = () => {
   const { id } = useParams();
@@ -19,20 +21,22 @@ const RecipeInfo = () => {
   const [isTimeEditing, setIsTimeEditing] = useState(false);
   const [isIngredientAdding, setIsIngredientAdding] = useState(false);
   const [isStepAdding, setIsStepAdding] = useState(false);
+  const [isModalShown, setIsModalShown] = useState(false);
 
   if (!recipes.map(r => r.id).includes(id)) {
     navigate('/not_found');
   }
 
-  const {title, time, difficulty, ingredients, steps} = recipes.find(r => r.id === id);
+  const {title, time, difficulty, ingredients, steps, cover} = recipes.find(r => r.id === id);
 
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentTime, setCurrentTime] = useState(time);
   const [currentDifficulty, setCurrentDifficulty] = useState(difficulty);
   const [currentIngredients, setCurrentIngredients] = useState([...ingredients]);
   const [currentSteps, setCurrentSteps] = useState([...steps]);
+  const [currentCover, setCurrentCover] = useState(cover);
 
-  const timeHM = minutesToHoursMinutesString(time);
+  const timeHM = minutesToHoursMinutesString(currentTime);
 
   const handleTitleChange = (event) => {
     setCurrentTitle(event.target.value);
@@ -133,20 +137,52 @@ const RecipeInfo = () => {
     }
   }
 
+  const handleDeleteClick = () => {
+    setIsModalShown(true);
+  }
+
+  const handleModalClose = () => {
+    setIsModalShown(false);
+  }
+
+  const handleYesClick = () => {
+    dispatch(deleteRecipe(id));
+    setIsModalShown(false);
+    navigate(-1);
+  }
+
+  const handleGoBackClick = () => {
+    navigate(-1);
+  }
+
+  const handleChangeCoverClick = () => {
+    let randomCover = currentCover;
+    const coversCount = 10;
+    while (randomCover === currentCover) {
+      randomCover = Math.floor(Math.random() * coversCount) + 1
+    }
+    setCurrentCover(randomCover);
+    dispatch(updateRecipe({id, cover: randomCover}));
+  }
+
   return (
     <div className={styles.recipePage}>
-      <header className={styles.recipePage__header}>
+      <header 
+        className={styles.recipePage__header} 
+        style={{
+          backgroundImage: currentCover && `url(${require(`./res/recipe_cover_${currentCover}.jpg`)})`
+        }}>
         <div className={styles.recipe__data}>
           <div className="flex-wrapper_centered">
           {
             isTitleEditing ? 
             <input 
               type='text' 
-              className={styles.recipePage__title} 
+              className={cn(styles.recipePage__title, styles.input)} 
               value={currentTitle} 
               onChange={handleTitleChange}
             /> :
-            <h1 className={styles.recipePage__title}>{title}</h1>
+            <h1 className={styles.recipePage__title}>{currentTitle}</h1>
           }
           {
             isTitleEditing ?
@@ -163,10 +199,17 @@ const RecipeInfo = () => {
           }  
           </div>                  
 
-          <div className="flex-wrapper_centered">
+          <div className={cn("flex-wrapper_centered", styles.recipePage__time)}>
           {
             isTimeEditing ?
-            <input type='number' className={styles.recipe__time} value={currentTime} onChange={handleTimeChange} min={0} max={5000} /> :
+            <input 
+              type='number' 
+              className={cn(styles.recipe__time, styles.input, styles.input_time)} 
+              value={currentTime} 
+              onChange={handleTimeChange} 
+              min={0} 
+              max={5000} 
+            /> :
             <div className={styles.recipe__time}>{timeHM}</div>
           }
           {
@@ -190,14 +233,14 @@ const RecipeInfo = () => {
 
             {
               isDifficultyEditing ?
-              <select className={styles.difficulty__value} onChange={handleDifficultyChange}>
+              <select className={styles.difficulty__value} value={currentDifficulty} onChange={handleDifficultyChange}>
                 <option value={1}>easy</option>
                 <option value={2}>medium</option>
                 <option value={3}>hard</option>
               </select> :
               <img 
                 className={styles.difficulty__value} 
-                src={require(`../Recipe/res/difficulty_${difficulty}.svg`)} 
+                src={require(`../Recipe/res/difficulty_${currentDifficulty}.svg`)} 
                 alt='' 
               />
             }
@@ -215,6 +258,9 @@ const RecipeInfo = () => {
               />
             }            
           </div>
+
+          <Button className={styles.button_changeCover} onClick={handleChangeCoverClick}>Change cover</Button>
+
         </div>         
       </header>
       <div className={styles.recipePage__main}>
@@ -265,6 +311,32 @@ const RecipeInfo = () => {
             ))
           }
         </ol>
+        <div className={styles.recipe__footerContainer}>
+          <Button 
+            onClick={handleGoBackClick}
+          >
+            Go back
+          </Button>
+          <Button 
+            onClick={handleDeleteClick} 
+            variant={{isAlert: true}}
+          >
+            Delete
+          </Button>
+        </div>
+        <Modal show={isModalShown} onHide={handleModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete recipe?</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button onClick={handleModalClose}>
+              No
+            </Button>
+            <Button variant={{isPrimary: true}} onClick={handleYesClick}>
+              Yes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );

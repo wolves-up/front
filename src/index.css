@@ -5,6 +5,7 @@
   --button-primary-color: #FF9053;
   --nav-color: #F5F7F9;
   --border-color: #E7EAE9;
+  --border-color-dark: #808080;
   --recipe-background: #E1E2F6;
 }
 
@@ -22,6 +23,10 @@ body {
 
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
   color: inherit;
 }
 
@@ -46,4 +51,11 @@ a {
   width: 100%;
   margin-left: 280px;
   padding: 20px 30px;
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
 }

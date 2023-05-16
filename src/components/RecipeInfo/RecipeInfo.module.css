@@ -10,6 +10,7 @@
   background: var(--recipe-background);
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   border-radius: inherit;
 }
 
@@ -18,23 +19,30 @@
   min-height: inherit;
   padding: 20px;
   background-color: rgba(255, 252, 252, 0.76);
+  backdrop-filter: blur(3px);
   border-radius: 12px 0 0 12px;
 }
 
 .recipePage__title {
   display: flex;
   align-items: center;
-  max-width: 370px;
+  max-width: 320px;
   min-height: 60px;
   margin: 15px 0;
   font-size: 32px;
   font-weight: bold;
 }
 
-.recipePage__difficulty {
+.recipePage__difficulty, .recipePage__time {
   display: flex;
+  align-items: center;
+  height: 22px;
   margin-top: 10px;
-  font-size: 0.8em;
+  font-size: 0.8rem;
+}
+
+.recipePage__time {
+  height: 24px;
 }
 
 .difficulty__value {
@@ -53,7 +61,8 @@
   display: flex;
   align-items: center;
   max-width: 80px;
-  font-size: 0.8em;
+  min-height: 22px;
+  font-size: 0.8rem;
 }
 
 .recipe__time::before {
@@ -68,10 +77,42 @@
 
 
 .button_add {
+  width: 16px;
+  height: 16px;
   margin-top: 37px;
   margin-left: 10px;
 }
 
 .button_edit {
   margin-left: 10px;
+}
+
+.recipe__footerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.button_changeCover {
+  margin-top: 20px;
+}
+
+.input {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.input:focus {
+  border: none;
+  border-bottom: 1px solid var(--border-color-dark);
+}
+
+.input_time {
+  border: 1px solid var(--border-color);
+}
+
+.input_time:focus {
+  border: 1px solid var(--border-color-dark);
 }

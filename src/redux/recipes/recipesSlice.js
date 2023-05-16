@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
 
 const initialState = {
@@ -11,20 +11,6 @@ const initialState = {
 export const recipesSlice = createSlice({
   name: 'recipes',
   initialState,
-  reducers: {
-    // loadRecipes: (state, action) => {
-    //   return action.payload;
-    // },
-    addRecipe: (state, action) => {
-      state.items.push(action.payload);
-    },
-    removeRecipe: (state, action) => {
-      state.items = state.items.filter(recipe => recipe.id !== action.payload);
-    },
-    clearRecipes: () => {
-      return initialState;
-    }
-  },
   extraReducers(builder) {
     builder
       .addCase(fetchRecipes.pending, (state, action) => {
@@ -49,6 +35,13 @@ export const recipesSlice = createSlice({
         let updatingRecipe = state.items.find(item => item.id === action.payload.id);
         updatingRecipe = {...updatingRecipe, ...action.payload};
         state.items = state.items.map(item => item.id === action.payload.id ? updatingRecipe : item);
+      })
+      .addCase(addRecipe.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items.push(action.payload);
+      })
+      .addCase(deleteRecipe.fulfilled, (state, action) => {
+        state.items = state.items.filter(item => item.id !== action.payload);
       })
   }
 });
@@ -80,8 +73,29 @@ export const updateRecipe = createAsyncThunk('recipes/updateRecipe', (data) => {
   });
 });
 
-export const { loadRecipes, addRecipe, removeRecipe } = recipesSlice.actions;
-export const selectRecipes = (state) => state.recipes.items;
+export const addRecipe = createAsyncThunk('recipes/addRecipe', (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const docRef = await addDoc(collection(db, 'recipes'), data);
+      resolve({id: docRef.id, ...data });
+    } catch(err) {
+      reject(err);
+    }
+  });
+});
+
+export const deleteRecipe = createAsyncThunk('recipes/deleteRecipe', (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await deleteDoc(doc(db, 'recipes', id));
+      resolve(id);
+    } catch(err) {
+      reject(err);
+    }
+  })
+})
+
+export const selectRecipes = (state) => [...state.recipes.items].reverse();
 export const selectRecipesStatus = (state) => state.recipes.status;
 
 export default recipesSlice.reducer;

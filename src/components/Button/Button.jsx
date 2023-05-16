@@ -12,6 +12,7 @@ const Button = ({className, onClick, variant, children, disabled}) => {
     variant?.isAccept ? styles.button_accept : '',
     variant?.isRemove ? styles.button_remove : '',
     variant?.isAdd ? styles.button_add : '',
+    variant?.isAlert ? styles.button_alert : '',
     disabled ? styles.button_disabled : ''
   );
     
