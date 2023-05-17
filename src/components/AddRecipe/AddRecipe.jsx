@@ -8,6 +8,7 @@ import { uid } from 'uid';
 import { addRecipe } from '../../redux/recipes/recipesSlice';
 import cn from 'classnames';
 import { selectUser } from '../../redux/user/userSlice';
+import { Modal } from 'react-bootstrap';
 
 const AddRecipe = () => {
   const dispatch = useDispatch();
@@ -19,10 +20,14 @@ const AddRecipe = () => {
   const [currentIngredients, setCurrentIngredients] = useState([]);
   const [currentSteps, setCurrentSteps] = useState([]);
   const [currentCover, setCurrentCover] = useState(null);
+  const [addStatus, setAddStatus] = useState('idle');
+  const [isModalShown, setIsModalShown] = useState(false);
+  const [emptyTitleError, setEmptyTitleError] = useState(false);
 
   const user = useSelector(selectUser);
 
   const handleTitleChange = (event) => {
+    setEmptyTitleError(event.target.value === '');
     setCurrentTitle(event.target.value);
   }
 
@@ -76,16 +81,31 @@ const AddRecipe = () => {
     ]);
   }
 
-  const handleSaveClick = () => {
-    dispatch(addRecipe({
-      userId: user.id,
-      title: currentTitle,
-      time: currentTime,
-      difficulty: currentDifficulty,
-      ingredients: currentIngredients,
-      steps: currentSteps,
-      cover: currentCover
-    }));
+  const handleSaveClick = async () => {
+    setEmptyTitleError(currentTitle === '');
+    if (addStatus === 'idle' && currentTitle !== '') {
+      try {
+        setAddStatus('pending');
+        await dispatch(addRecipe({
+          userId: user.id,
+          title: currentTitle,
+          time: currentTime,
+          difficulty: currentDifficulty,
+          ingredients: currentIngredients,
+          steps: currentSteps,
+          cover: currentCover
+        })).unwrap();
+        setIsModalShown(true);
+      } catch(err) {
+        console.log(err);
+      } finally {
+        setAddStatus('idle');
+      }
+    }
+  }
+
+  const handleModalClose = () => {
+    setIsModalShown(false);
     navigate(-1);
   }
 
@@ -114,6 +134,7 @@ const AddRecipe = () => {
             onChange={handleTitleChange}
             placeholder='Recipe title'
           />
+          {emptyTitleError && <div className='error'>Please, give your recipe a title!</div>}
           <div className={styles.recipePage__time}>
             Time (in minutes):
           </div>
@@ -190,6 +211,16 @@ const AddRecipe = () => {
           }
         </ol>
         <Button onClick={handleSaveClick}>Save</Button>
+        <Modal show={isModalShown} onHide={handleModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Recipe is successfully created!</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button onClick={handleModalClose}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );

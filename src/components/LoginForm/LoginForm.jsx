@@ -9,6 +9,7 @@ import Form from '../Form/Form';
 import styles from '../Form/Form.module.css';
 import cn from 'classnames';
 import Button from "../Button/Button";
+import ButtonLink from "../ButtonLink/ButtonLink";
 
 const LoginForm = () => {
   const [error, setError] = useState('');
@@ -95,6 +96,11 @@ const LoginForm = () => {
         >
           LOG IN
         </Button>
+
+        <div className={styles.login_signup_link}>
+          <div className={styles.login_signup_link__header}>Don`t have an account?</div> 
+          <ButtonLink link="/signup">Sign up</ButtonLink>
+        </div>
 
         { error && <div className={styles.error}>{ error }</div> }
       </Form>

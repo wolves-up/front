@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import RecipeInfo from './components/RecipeInfo/RecipeInfo';
 import AddRecipe from './components/AddRecipe/AddRecipe';
 import Recipes from './components/Recipes/Recipes';
+import Settings from './components/Settings/Settings';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/recipes' element={<RequireAuth><Recipes /></RequireAuth>} />
           <Route path='/add_recipe' element={<RequireAuth><AddRecipe /></RequireAuth>} />
           <Route path='/recipe/:id' element={<RequireAuth><RecipeInfo /></RequireAuth>} />
+          <Route path='/settings' element={<RequireAuth><Settings /></RequireAuth>} />
           <Route path='/not_found' element={<NotFoundPage />} />
           <Route path='*' element={<NotFoundPage />} />
       </Routes>

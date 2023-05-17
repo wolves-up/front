@@ -55,3 +55,26 @@ input:focus {
   margin: 20px;
   color: #ff0000;
 }
+
+.section__header {
+  margin-top: 30px;
+}
+
+.radio__item {
+  margin-right: 20px;
+}
+
+.input_radio {
+  margin-right: 8px;
+}
+
+.login_signup_link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.login_signup_link__header {
+  margin-bottom: 10px;
+}

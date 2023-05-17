@@ -59,3 +59,15 @@ h2 {
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.error {
+  color: rgba(255, 0, 0, 0.781);
+  font-size: 0.9rem;
+}

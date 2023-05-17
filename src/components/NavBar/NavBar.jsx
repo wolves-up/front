@@ -24,7 +24,7 @@ const NavBar = () => {
           text={'Meal plan'}
         />
         <NavBarItem 
-          link={'/'}
+          link={'/settings'}
           icon={'settings'}
           text={'Settings'}
         />

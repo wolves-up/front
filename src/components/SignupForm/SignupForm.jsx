@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { passwordIsValid, invalidPasswordErrorMessage } from "../../utils/validators";
@@ -10,6 +10,7 @@ import Form from '../Form/Form';
 import styles from '../Form/Form.module.css';
 import cn from 'classnames';
 import Button from "../Button/Button";
+import ButtonLink from "../ButtonLink/ButtonLink";
 
 const SignupForm = () => {
   const [error, setError] = useState('');
@@ -51,11 +52,11 @@ const SignupForm = () => {
   }
 
   const handleHeightChange = (event) => {
-    setHeight(event.target.value);
+    setHeight(+event.target.value);
   }
 
   const handleWeightChange = (event) => {
-    setWeight(event.target.value);
+    setWeight(+event.target.value);
   }
 
   const handleSubmit = async (event) => {
@@ -64,42 +65,42 @@ const SignupForm = () => {
 
     if (!passwordIsValid(password)) {
       setError(invalidPasswordErrorMessage);
-      return;
     }
 
     if (password !== confirmPassword) {
       setError('The passwords do not match');
-      return;
     }
 
-    try {
-      const userAuth = await createUserWithEmailAndPassword(auth, email, password);
-      const nameToStore = name === '' ? 'user' : name;
+    if (error === '') {
       try {
-        await setDoc(doc(db, 'users', userAuth.user.uid), {
+        const userAuth = await createUserWithEmailAndPassword(auth, email, password);
+        const nameToStore = name === '' ? 'user' : name;
+        try {
+          await setDoc(doc(db, 'users', userAuth.user.uid), {
+            name: nameToStore,
+            isMale,
+            birthDate,
+            height: height,
+            weight: weight
+          });
+        } catch(err) {
+          console.log(err);
+        }
+        dispatch(login({
+          email: userAuth.user.email,
+          id: userAuth.user.uid,
           name: nameToStore,
           isMale,
           birthDate,
-          height: +height,
-          weight: +weight
-        });
+          height: height,
+          weight: weight
+        })); 
+        navigate('/dashboard');
       } catch(err) {
         console.log(err);
-      }
-      dispatch(login({
-        email: userAuth.user.email,
-        id: userAuth.user.uid,
-        name: nameToStore,
-        isMale,
-        birthDate,
-        height: +height,
-        weight: +weight
-      })); 
-      setError('');
-      navigate('/dashboard');
-    } catch(err) {
-      setError('An error ocurred');
-    };
+        setError('An error ocurred');
+      };
+    }
     setLoading(false);
   }
 
@@ -147,30 +148,35 @@ const SignupForm = () => {
         onChange={handleConfirmPasswordChange}
       />
 
-      <h3 class="section__header">Personal info</h3>
+      <h3 className={styles.section__header}>Personal info</h3>
 
       <div className={styles.form__item}>Sex</div>
-      <input 
-        id="male" 
-        type="radio" 
-        name="sex" 
-        className={cn(styles.input, styles.form__item_inline)}
-        value="male"
-        checked={isMale}
-        onChange={handleSexChange}
-      />       
-      <label for="male">Male</label> 
-      <input 
-        id="female" 
-        type="radio" 
-        name="sex" 
-        className={cn(styles.input, styles.form__item_inline)}
-        value="female"
-        checked={!isMale}
-        onChange={handleSexChange}
-      /> 
-      <label for="female">Female</label>
-
+      <div className="flex-wrapper">
+        <div className={styles.radio__item}>
+          <input 
+            id="male" 
+            type="radio" 
+            name="sex" 
+            className={cn(styles.input, styles.form__item_inline, styles.input_radio)}
+            value="male"
+            checked={isMale}
+            onChange={handleSexChange}
+          />       
+          <label for="male">Male</label> 
+        </div>
+        <div className={styles.radio__item}>
+          <input 
+            id="female" 
+            type="radio" 
+            name="sex" 
+            className={cn(styles.input, styles.form__item_inline, styles.input_radio)}
+            value="female"
+            checked={!isMale}
+            onChange={handleSexChange}
+          /> 
+          <label for="female">Female</label>
+        </div>
+      </div>
       <div className={styles.form__item}>Birth date</div>
       <input 
         type="date" 
@@ -206,6 +212,11 @@ const SignupForm = () => {
       >
         SIGN UP
       </Button>
+
+      <div className={styles.login_signup_link}>
+        <div className={styles.login_signup_link__header}>Already registered?</div> 
+        <ButtonLink link="/login">Log in</ButtonLink>
+      </div>
 
       { error && <div className={styles.error}>{ error }</div> }
     </Form>
