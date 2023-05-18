@@ -1,0 +1,30 @@
+.header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.td {
+  padding: 15px;
+  font-weight: 500;
+  color: #676767;
+}
+
+.td_header {
+  text-align: left;
+  text-transform: uppercase;
+  color: #84868A;
+}
+
+.td_number {
+  padding: 7px 10px;
+  background: #F5F7FB;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.td_product {
+  color: var(--main-color);
+}
+
+.button_remove {
+  vertical-align: middle;
+}

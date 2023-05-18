@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { passwordIsValid, invalidPasswordErrorMessage } from "../../utils/validators";
@@ -91,9 +91,10 @@ const SignupForm = () => {
           id: userAuth.user.uid,
           name: nameToStore,
           isMale,
-          birthDate,
+          birthDate: birthDate || '2000-01-01',
           height: height,
-          weight: weight
+          weight: weight,
+          activityLevel: 2
         })); 
         navigate('/dashboard');
       } catch(err) {

@@ -2,27 +2,52 @@ import styles from './Dashboard.module.css';
 import RecipesContainer from '../RecipesContainer/RecipesContainer';
 import Recipe from '../Recipe/Recipe';
 import ButtonLink from '../ButtonLink/ButtonLink';
+import Calendar from 'moedim';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRecipes, selectRecipes, selectRecipesStatus } from '../../redux/recipes/recipesSlice';
 import { useEffect, useState } from 'react';
 import { selectUser } from '../../redux/user/userSlice';
+import ProductsTable from '../ProductsTable/ProductsTable';
+import { changeDate, fetchProducts, selectDate, selectProducts, selectProductsStatus } from '../../redux/products/productsSlice';
+import { dateToString } from '../../utils/converters';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const recipes = useSelector(selectRecipes);
-  const status = useSelector(selectRecipesStatus);
+  const recipesStatus = useSelector(selectRecipesStatus);
   const user = useSelector(selectUser);
+  const productsDate = useSelector(selectDate);
+  const products = useSelector(selectProducts);
+  const productsStatus = useSelector(selectProductsStatus);
   const [buttonText, setButtonText] = useState('');
+  const [date, setDate] = useState(productsDate ? new Date(productsDate) : new Date());
+  const [currentProducts, setCurrentProducts] = useState([...products]);
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (recipesStatus === 'idle') {
       dispatch(fetchRecipes(user.id));
-    } else if (status === 'succeeded' && recipes.length === 0) {
+    } else if (recipesStatus === 'succeeded' && recipes.length === 0) {
       setButtonText('Add your first recipe!');
-    } else if (status !== 'loading') {
+    } else if (recipesStatus !== 'loading') {
       setButtonText('New recipe');
     }
-  }, [status, dispatch, user.id, recipes.length]);
+    if (productsStatus === 'idle') {
+      debugger
+      dispatch(changeDate(dateToString(date)));
+      dispatch(fetchProducts({userId: user.id, date: dateToString(date)}));
+    } else if (productsStatus === 'succeeded') {
+      setCurrentProducts([...products])
+    }
+  }, [recipesStatus, productsStatus, products, date, dispatch, user.id, recipes.length]);
+
+  const handleDateChange = (value) => {
+    console.log(value);
+    console.log(dateToString(value));
+    setDate(value);
+    dispatch(changeDate(dateToString(value)));
+    dispatch(fetchProducts({userId: user.id, date: dateToString(value)}));
+  }
 
   return (
       <main>
@@ -44,68 +69,16 @@ const Dashboard = () => {
           }
         </RecipesContainer>
         <section class="flex-wrapper">
-          <div class="statistics">
-            <h3 class="statistics__header">Macronutrient targets</h3>
-            <div class="statistics__data macronutrients"></div>
+          <div className={styles.statistics}>
+            <h3 className={styles.statistics__header}>Macronutrient targets</h3>
+            <div className={cn(styles.statistics__data, styles.macronutrients)}></div>
           </div>
-          <div class="statistics">
-            <h3 class="statistics__header">Today`s meal plan</h3>
-            <div class="statistics__data meal-plan">
-              <ul class="meals-list">
-                <li class="meals-list__item">
-                  <div class="meal__title"> Meal #1</div>
-                  <ul class="meal__products">
-                    <li class="products__item">Oatmeal with bananas and strawberries</li>
-                    <li class="products__item">Green tea</li>
-                  </ul>
-                </li>
-                <li class="meals-list__item">
-                  <div class="meal__title"> Meal #2</div>
-                  <ul class="meal__products">
-                    <li class="products__item">Soup</li>
-                    <li class="products__item">Spaghetti</li>
-                    <li class="products__item">Falafels</li>
-                    <li class="products__item">Green tea</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div id="calendar"></div>
+          <Calendar className={cn(styles.statistics, styles.statistics__data)} value={date} onChange={handleDateChange} />
         </section>
-        <div class="statistics">
-          <h3 class="statistics__header">Today`s products</h3>
-          <div class="statistics__data products">
-            <table>
-              <tr class="products-table__header">
-                <th class="column-title column-data">#</th>
-                <th class="column-title column-data">product</th>
-                <th class="column-title column-data">count (g)</th>
-                <th class="column-title column-data">proteins (g)</th>
-                <th class="column-title column-data">fats (g)</th>
-                <th class="column-title column-data">carbohydrates (g)</th>
-                <th class="column-title column-data">energy (kcal)</th>
-              </tr>
-              <tr class="products-table__row">
-                <td class="column-data"><div class="column-data_number">1</div></td>
-                <td class="column-data column-data_product">Apple</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-              </tr>
-              <tr class="products-table__row">
-                <td class="column-data"><div class="column-data_number">1</div></td>
-                <td class="column-data column-data_product">Apple</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-                <td class="column-data">100</td>
-              </tr>
-            </table>
-            <button class="button button_add"></button>
+        <div className={styles.statistics}>
+          <h3 className={styles.statistics__header}>Today`s products</h3>
+          <div className={styles.statistics__data}>
+            <ProductsTable products={currentProducts} />
           </div>
         </div>
       </main>

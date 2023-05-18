@@ -1,16 +1,13 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login, selectUser, updateUser } from "../../redux/user/userSlice";
+import { selectUser, updateUser } from "../../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { passwordIsValid, invalidPasswordErrorMessage } from "../../utils/validators";
-import { doc, setDoc } from "firebase/firestore";
 import Form from '../Form/Form';
 import styles from '../Form/Form.module.css';
 import cn from 'classnames';
 import Button from "../Button/Button";
 import { Modal } from "react-bootstrap";
+import { BMR, getEnergyFromActivityLevel } from "../../utils/equations";
+import { getAgeFromBirthdate } from "../../utils/converters";
 
 const Settings = () => {
   const user = useSelector(selectUser);
@@ -20,6 +17,7 @@ const Settings = () => {
   const [birthDate, setBirthDate] = useState(user.birthDate);
   const [height, setHeight] = useState(user.height);
   const [weight, setWeight] = useState(user.weight);
+  const [activityLevel, setActivityLevel] = useState(user.activityLevel);
   const [updateStatus, setUpdateStatus] = useState('idle');
   const [isModalShown, setIsModalShown] = useState(false);
   const [emptyBirthdateError, setEmptyBirthdateError] = useState(false);
@@ -48,6 +46,10 @@ const Settings = () => {
     setWeight(+event.target.value);
   }
 
+  const handleActivityLevelChange = (event) => {
+    setActivityLevel(+event.target.value);
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setEmptyBirthdateError(birthDate === '');
@@ -60,7 +62,8 @@ const Settings = () => {
             isMale,
             birthDate,
             height,
-            weight
+            weight,
+            activityLevel
           })).unwrap();
         setIsModalShown(true);
       } catch(err) {
@@ -74,6 +77,9 @@ const Settings = () => {
   const handleModalClose = () => {
     setIsModalShown(false);
   }
+
+  const bmr = BMR(isMale, getAgeFromBirthdate(new Date(birthDate)), height, weight);
+  const activityEnergy = getEnergyFromActivityLevel(activityLevel, bmr);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -143,6 +149,38 @@ const Settings = () => {
         value={weight}
         onChange={handleWeightChange}
       />
+
+      <div className={styles.form__item}>Activity level</div>
+      <select 
+        className={styles.form__select} 
+        value={activityLevel} 
+        onChange={handleActivityLevelChange}
+      >
+        <option value={0}>
+          None
+        </option>
+        <option value={1}>
+          Sedentary (BMR x 0.2)
+        </option>
+        <option value={2}>
+          Lightly active (BMR x 0.375)
+        </option>
+        <option value={3}>
+          Moderately active (BMR x 0.5)
+        </option>
+        <option value={4}>
+          Very active (BMR x 0.9)
+        </option>
+      </select>
+      {
+        birthDate !== '' &&
+        <div className={styles.form__item}>
+          Total energy burned: {bmr + activityEnergy} kcal 
+          <br />
+          (BMR: {bmr} kcal + Activity: {activityEnergy} kcal)
+        </div>
+      }
+
       <Button>
         Save
       </Button>

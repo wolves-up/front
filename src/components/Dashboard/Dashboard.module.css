@@ -1,0 +1,17 @@
+.statistics {
+  margin-top: 27px;
+}
+
+.statistics__header {
+  margin-bottom: 18px;
+}
+
+.statistics__data {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.macronutrients {  
+  width: 452px;
+  margin-right: 75px;
+}
