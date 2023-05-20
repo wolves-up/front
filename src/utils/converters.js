@@ -18,3 +18,11 @@ export const dateToString = (date) => {
   const month = getDateComponent(date.getMonth() + 1);
   return `${date.getFullYear()}-${month}-${day}`;
 }
+
+export const rounded = (value, digitsAfterPointCount) => {
+  return Math.round(value * 10 ** digitsAfterPointCount) / 100;
+}
+
+export const kjToKcal = (value) => {
+  return value / 4.1868;
+}

@@ -1,16 +1,47 @@
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import ProductsTableRow from '../ProductsTableRow/ProductsTableRow';
 import styles from './ProductsTable.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, deleteProduct, selectDate } from '../../redux/products/productsSlice';
+import { selectUser } from '../../redux/user/userSlice';
 
 const ProductsTable = ({products}) => {
+  const [isRowAdding, setIsRowAdding] = useState(false);
+  const [currentProducts, setCurrentProducts] = useState([...products])
+  const dispatch = useDispatch();
+  const date = useSelector(selectDate);
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    setCurrentProducts([...products]);
+  }, [products]);
+
   const headerData = {
     title: 'product', 
     count: 'count (g)', 
     proteins: 'proteins (g)', 
     fats: 'fats (g)',
-    carbohydrates: 'carbohydrates (g)',
+    carbohydrates: 'carbs (g)',
     energy: 'energy (kcal)'
   };
+
+  const handleAddClick = () => {
+    if (isRowAdding) return;
+    setIsRowAdding(true);
+
+  }
+
+  const handleAcceptClick = (item) => {
+    setIsRowAdding(false);
+    setCurrentProducts([...currentProducts, item]);
+    dispatch(addProduct({...item, userId: user.id, date}));
+  }
+
+  const handleRemoveClick = (productId) => {
+    setCurrentProducts(currentProducts.filter(item => item.id !== productId));
+    dispatch(deleteProduct(productId));
+  }
 
   return (
     <>
@@ -19,9 +50,27 @@ const ProductsTable = ({products}) => {
         isHeader
         data={headerData} 
       />
-      {products.map((item, index) => <ProductsTableRow data={item} index={index}/>)}
+      {
+      currentProducts.map(
+        (item, index) => 
+        <ProductsTableRow 
+          key={item.id} 
+          data={item} 
+          index={index} 
+          handleRemoveClick={handleRemoveClick} 
+        />)
+      }    
+      {
+      isRowAdding && 
+      <ProductsTableRow 
+        isForm 
+        index={products.length} 
+        handleCancelProductAdding={() => setIsRowAdding(false)} 
+        handleAcceptClick={handleAcceptClick}
+      />
+      }
     </table>
-    <Button variant={{isCRUD: true, isAdd: true}} />
+    <Button className={styles.button_add} variant={{isCRUD: true, isAdd: true}} onClick={handleAddClick} />
     </>
   );
 }

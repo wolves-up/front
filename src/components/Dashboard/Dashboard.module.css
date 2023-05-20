@@ -7,11 +7,21 @@
 }
 
 .statistics__data {
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  padding: 5px;
+  height: fit-content;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
 }
 
 .macronutrients {  
   width: 452px;
-  margin-right: 75px;
+  margin-right: 90px;
+}
+
+.table {
+  margin-bottom: 200px;
+}
+
+.calendar {
+  margin-top: 88px;
 }

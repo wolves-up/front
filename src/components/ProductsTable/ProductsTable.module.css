@@ -2,3 +2,8 @@
   width: 100%;
 }
 
+.button_add {
+  width: 20px;
+  height: 20px;
+  margin: 15px 23px;
+}

@@ -21,14 +21,14 @@ export const getEnergyFromActivityLevel = (level, bmr) => {
   }
 }
 
-export const proteinsInGramsFromBMR = (bmr) => {
-  return parseInt(bmr * 0.25 / 4 * 10) / 10;
+export const proteinsInGramsFromEnergy = (energy) => {
+  return parseInt(energy * 0.25 / 4 * 10) / 10;
 }
 
-export const carbohydratesInGramsFromBMR = (bmr) => {
-  return parseInt(bmr * 0.4 / 4 * 10) / 10;
+export const carbohydratesInGramsFromEnergy = (energy) => {
+  return parseInt(energy * 0.4 / 4 * 10) / 10;
 }
 
-export const fatInGramsFromBMR = (bmr) => {
-  return parseInt(bmr * 0.35 / 9 * 10) / 10;
+export const fatsInGramsFromEnergy = (energy) => {
+  return parseInt(energy * 0.35 / 9 * 10) / 10;
 }

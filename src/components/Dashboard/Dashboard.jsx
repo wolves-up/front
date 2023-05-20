@@ -10,7 +10,9 @@ import { useEffect, useState } from 'react';
 import { selectUser } from '../../redux/user/userSlice';
 import ProductsTable from '../ProductsTable/ProductsTable';
 import { changeDate, fetchProducts, selectDate, selectProducts, selectProductsStatus } from '../../redux/products/productsSlice';
-import { dateToString } from '../../utils/converters';
+import { dateToString, getAgeFromBirthdate } from '../../utils/converters';
+import Chart from '../Chart/Chart';
+import { BMR, carbohydratesInGramsFromEnergy, fatsInGramsFromEnergy, getEnergyFromActivityLevel, proteinsInGramsFromEnergy } from '../../utils/equations';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const Dashboard = () => {
   const productsStatus = useSelector(selectProductsStatus);
   const [buttonText, setButtonText] = useState('');
   const [date, setDate] = useState(productsDate ? new Date(productsDate) : new Date());
-  const [currentProducts, setCurrentProducts] = useState([...products]);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     if (recipesStatus === 'idle') {
@@ -33,17 +35,48 @@ const Dashboard = () => {
       setButtonText('New recipe');
     }
     if (productsStatus === 'idle') {
-      debugger
       dispatch(changeDate(dateToString(date)));
       dispatch(fetchProducts({userId: user.id, date: dateToString(date)}));
-    } else if (productsStatus === 'succeeded') {
-      setCurrentProducts([...products])
-    }
+    } 
   }, [recipesStatus, productsStatus, products, date, dispatch, user.id, recipes.length]);
 
+  useEffect(() => {
+    const bmr = BMR(user.isMale, getAgeFromBirthdate(new Date(user.birthDate)), user.height, user.weight);
+    const totalEnergy = getEnergyFromActivityLevel(user.activityLevel, bmr) + bmr;
+    const proteinsConsumed = 
+      products.map(p => p.proteins).reduce((sum, elem) => sum + elem, 0); 
+    const fatsConsumed = 
+      products.map(p => p.fats).reduce((sum, elem) => sum + elem, 0);
+    const carbohydratesConsumed = 
+      products.map(p => p.carbohydrates).reduce((sum, elem) => sum + elem, 0);
+    const energyConsumed = 
+      products.map(p => p.energy).reduce((sum, elem) => sum + elem, 0);
+    
+    setChartData([
+      {
+        macronutrientType: 'proteins',
+        consumed: proteinsConsumed,
+        left: Math.max(proteinsInGramsFromEnergy(totalEnergy) - proteinsConsumed)
+      },
+      {
+        macronutrientType: 'fats',
+        consumed: fatsConsumed,
+        left: Math.max(fatsInGramsFromEnergy(totalEnergy) - fatsConsumed)
+      },
+      {
+        macronutrientType: 'carbohydrates',
+        consumed: carbohydratesConsumed,
+        left: Math.max(0, carbohydratesInGramsFromEnergy(totalEnergy) - carbohydratesConsumed)
+      },
+      {
+        macronutrientType: 'energy',
+        consumed: energyConsumed,
+        left: Math.max(totalEnergy - energyConsumed)
+      }
+    ]);
+  }, [products, user.birthDate, user.activityLevel, user.height, user.weight, user.isMale]);
+
   const handleDateChange = (value) => {
-    console.log(value);
-    console.log(dateToString(value));
     setDate(value);
     dispatch(changeDate(dateToString(value)));
     dispatch(fetchProducts({userId: user.id, date: dateToString(value)}));
@@ -71,14 +104,20 @@ const Dashboard = () => {
         <section class="flex-wrapper">
           <div className={styles.statistics}>
             <h3 className={styles.statistics__header}>Macronutrient targets</h3>
-            <div className={cn(styles.statistics__data, styles.macronutrients)}></div>
+            <div className={cn(styles.statistics__data, styles.macronutrients)}>
+              <Chart data={chartData} />
+            </div>
           </div>
-          <Calendar className={cn(styles.statistics, styles.statistics__data)} value={date} onChange={handleDateChange} />
+          <Calendar 
+            className={cn(styles.statistics, styles.statistics__data, styles.calendar)} 
+            value={date} 
+            onChange={handleDateChange} 
+          />
         </section>
         <div className={styles.statistics}>
           <h3 className={styles.statistics__header}>Today`s products</h3>
-          <div className={styles.statistics__data}>
-            <ProductsTable products={currentProducts} />
+          <div className={cn(styles.statistics__data, styles.table)}>
+            <ProductsTable products={products} />
           </div>
         </div>
       </main>

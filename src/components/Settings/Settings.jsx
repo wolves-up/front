@@ -17,7 +17,7 @@ const Settings = () => {
   const [birthDate, setBirthDate] = useState(user.birthDate);
   const [height, setHeight] = useState(user.height);
   const [weight, setWeight] = useState(user.weight);
-  const [activityLevel, setActivityLevel] = useState(user.activityLevel);
+  const [activityLevel, setActivityLevel] = useState(user.activityLevel || 0);
   const [updateStatus, setUpdateStatus] = useState('idle');
   const [isModalShown, setIsModalShown] = useState(false);
   const [emptyBirthdateError, setEmptyBirthdateError] = useState(false);
