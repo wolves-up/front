@@ -35,7 +35,7 @@ const ProductsTable = ({products}) => {
   const handleAcceptClick = (item) => {
     setIsRowAdding(false);
     setCurrentProducts([...currentProducts, item]);
-    dispatch(addProduct({...item, userId: user.id, date}));
+    dispatch(addProduct({...item, userId: user.id, date, timestamp: new Date()}));
   }
 
   const handleRemoveClick = (productId) => {

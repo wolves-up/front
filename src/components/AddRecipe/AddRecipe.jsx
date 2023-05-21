@@ -93,7 +93,8 @@ const AddRecipe = () => {
           difficulty: currentDifficulty,
           ingredients: currentIngredients,
           steps: currentSteps,
-          cover: currentCover
+          cover: currentCover,
+          timestamp: new Date()
         })).unwrap();
         setIsModalShown(true);
       } catch(err) {

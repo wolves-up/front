@@ -173,13 +173,14 @@ const Settings = () => {
         </option>
       </select>
       {
-        birthDate !== '' &&
+        birthDate !== '' && bmr > 0 &&
         <div className={styles.form__item}>
           Total energy burned: {bmr + activityEnergy} kcal 
           <br />
           (BMR: {bmr} kcal + Activity: {activityEnergy} kcal)
         </div>
       }
+      {bmr <= 0 && <div className="error">Invalid height or weight</div>}
 
       <Button>
         Save

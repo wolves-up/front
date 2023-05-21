@@ -50,7 +50,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', (data) =
       querySnapshot.forEach(doc => {
         products.push({id: doc.id, ...doc.data()});
       });
-      resolve(products);
+      resolve(products.sort((p1, p2) => p1.timestamp - p2.timestamp));
     } catch(err) {
       reject(err);
     }

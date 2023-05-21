@@ -11,6 +11,8 @@ import styles from '../Form/Form.module.css';
 import cn from 'classnames';
 import Button from "../Button/Button";
 import ButtonLink from "../ButtonLink/ButtonLink";
+import { BMR } from "../../utils/equations";
+import { getAgeFromBirthdate } from "../../utils/converters";
 
 const SignupForm = () => {
   const [error, setError] = useState('');
@@ -36,26 +38,32 @@ const SignupForm = () => {
   }
 
   const handlePasswordChange = (event) => {
+    setError('');
     setPassword(event.target.value);
   }
 
   const handleConfirmPasswordChange = (event) => {
+    setError('');
     setConfirmPassword(event.target.value);
   }
 
   const handleSexChange = (event) => {
+    setError('');
     setIsMale(event.target.value === 'male');
   }
 
   const handleBirthdateChange = (event) => {
+    setError('');
     setBirthDate(event.target.value);
   }
 
   const handleHeightChange = (event) => {
+    setError('');
     setHeight(+event.target.value);
   }
 
   const handleWeightChange = (event) => {
+    setError('');
     setWeight(+event.target.value);
   }
 
@@ -63,15 +71,25 @@ const SignupForm = () => {
     event.preventDefault();
     setLoading(true);
 
+    let errorOcurred = error !== '';
+
+    const bmr = BMR(isMale, getAgeFromBirthdate(new Date(birthDate)), height, weight);
+    if (bmr < 0) {
+      setError('Invalid height or weight');
+      errorOcurred = true;
+    }
+
     if (!passwordIsValid(password)) {
       setError(invalidPasswordErrorMessage);
+      errorOcurred = true;
     }
 
     if (password !== confirmPassword) {
       setError('The passwords do not match');
+      errorOcurred = true;
     }
 
-    if (error === '') {
+    if (!errorOcurred) {
       try {
         const userAuth = await createUserWithEmailAndPassword(auth, email, password);
         const nameToStore = name === '' ? 'user' : name;

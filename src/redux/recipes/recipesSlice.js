@@ -55,7 +55,7 @@ export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', (userId) =>
       querySnapshot.forEach(doc => {
         recipes.push({id: doc.id, ...doc.data()});
       });
-      resolve(recipes);
+      resolve(recipes.sort((r1, r2) => r1.timestamp - r2.timestamp));
     } catch(err) {
       reject(err);
     }

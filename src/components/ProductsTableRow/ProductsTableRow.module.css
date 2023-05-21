@@ -23,12 +23,16 @@
   text-align: center;
 }
 
+.td_column1 {
+  width: 68px;
+}
+
 .td_product {
   color: var(--main-color);
 }
 
 .td_wide {
-  min-width: 200px;
+  width: 240px;
 }
 
 .button_remove {

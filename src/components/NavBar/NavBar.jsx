@@ -19,11 +19,6 @@ const NavBar = () => {
           text={'Recipes'}
         />
         <NavBarItem 
-          link={'/'}
-          icon={'meal'}
-          text={'Meal plan'}
-        />
-        <NavBarItem 
           link={'/settings'}
           icon={'settings'}
           text={'Settings'}

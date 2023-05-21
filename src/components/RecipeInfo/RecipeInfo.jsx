@@ -4,7 +4,7 @@ import EditableListItem from '../EditableListItem/EditableListItem';
 import styles from './RecipeInfo.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteRecipe, selectRecipes, updateRecipe } from '../../redux/recipes/recipesSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import { uid } from 'uid';
 import Modal from 'react-bootstrap/Modal';
@@ -22,12 +22,17 @@ const RecipeInfo = () => {
   const [isIngredientAdding, setIsIngredientAdding] = useState(false);
   const [isStepAdding, setIsStepAdding] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
+  const [emptyTitleError, setEmptyTitleError] = useState(false);
 
-  if (!recipes.map(r => r.id).includes(id)) {
-    navigate('/not_found');
-  }
+  useEffect(() => {
+    if (!recipes.map(r => r.id).includes(id)) {
+      navigate('/not_found', {replace: true});
+    }
+  })
 
-  const {title, time, difficulty, ingredients, steps, cover} = recipes.find(r => r.id === id);
+  const {title, time, difficulty, ingredients, steps, cover} = 
+    recipes.find(r => r.id === id) || 
+    {title: '', time: 0, difficulty: 1, ingredients: [], steps: [], cover: null};
 
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentTime, setCurrentTime] = useState(time);
@@ -39,6 +44,7 @@ const RecipeInfo = () => {
   const timeHM = minutesToHoursMinutesString(currentTime);
 
   const handleTitleChange = (event) => {
+    setEmptyTitleError(event.target.value === '');
     setCurrentTitle(event.target.value);
   }
 
@@ -63,8 +69,10 @@ const RecipeInfo = () => {
   }
 
   const handleAcceptTitleClick = () => {
-    dispatch(updateRecipe({id, title: currentTitle}));
-    setIsTitleEditing(false);
+    if (currentTitle !== '') {
+      dispatch(updateRecipe({id, title: currentTitle}));
+      setIsTitleEditing(false);
+    }
   }
 
   const handleAcceptTimeClick = () => {
@@ -176,12 +184,15 @@ const RecipeInfo = () => {
           <div className="flex-wrapper_centered">
           {
             isTitleEditing ? 
+            <>
             <input 
               type='text' 
               className={cn(styles.recipePage__title, styles.input)} 
               value={currentTitle} 
               onChange={handleTitleChange}
-            /> :
+            />
+            </>
+            :
             <h1 className={styles.recipePage__title}>{currentTitle}</h1>
           }
           {
@@ -199,6 +210,8 @@ const RecipeInfo = () => {
           }  
           </div>                  
 
+          {emptyTitleError && <div className='error'>Please, give your recipe a title!</div>} 
+          
           <div className={cn("flex-wrapper_centered", styles.recipePage__time)}>
           {
             isTimeEditing ?

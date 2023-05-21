@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import styles from './ProductsTableRow.module.css';
 import cn from'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { requestString } from '../../fdcConfig';
 import { useDebounce } from 'use-debounce';
 import { kjToKcal, rounded } from '../../utils/converters';
@@ -11,7 +10,6 @@ const ProductsTableRow = ({
   data, index, isHeader, isForm, 
   handleCancelProductAdding, handleAcceptClick, handleRemoveClick}) => {
 
-  const dispatch = useDispatch();
   const tdClasses = cn(styles.td, isHeader ? styles.td_header : '');
   const [title, setTitle] = useState('');
   const [debouncedTitle] = useDebounce(title, 500);
@@ -161,7 +159,7 @@ const ProductsTableRow = ({
   } else {
     row = (
       <tr className={isHeader && styles.header}>
-        <td className={tdClasses}>
+        <td className={cn(tdClasses, styles.td_column1)}>
           {
             isHeader ?
             '#' :
