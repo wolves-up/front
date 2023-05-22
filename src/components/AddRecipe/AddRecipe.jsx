@@ -34,7 +34,8 @@ const AddRecipe = () => {
   }
 
   const handleTimeChange = (event) => {
-    setCurrentTime(parseInt(event.target.value));
+    const value = event.target.value;
+    setCurrentTime(value === '' ? 0 : parseInt(value));
   }
 
   const handleDifficultyChange = (event) => {
