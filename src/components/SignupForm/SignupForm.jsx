@@ -47,7 +47,7 @@ const SignupForm = () => {
     setConfirmPassword(event.target.value);
   }
 
-  const handleSexChange = (event) => {
+  const handleGenderChange = (event) => {
     setError('');
     setIsMale(event.target.value === 'male');
   }
@@ -137,7 +137,7 @@ const SignupForm = () => {
         onChange={handleNameChange}
       />
 
-      <div className={styles.form__item}>Email</div>
+      <div className={styles.form__item}>Email <span className={styles.input_required}>*</span></div>
       <input 
         type="email" 
         className={cn(styles.input, styles.form__item)}
@@ -147,7 +147,7 @@ const SignupForm = () => {
         onChange={handleEmailChange}
       />
 
-      <div className={styles.form__item}>Password</div>
+      <div className={styles.form__item}>Password <span className={styles.input_required}>*</span></div>
       <input 
         type="password" 
         className={cn(styles.input, styles.form__item)}
@@ -157,7 +157,7 @@ const SignupForm = () => {
         onChange={handlePasswordChange}
       />
 
-      <div className={styles.form__item}>Confirm password</div>
+      <div className={styles.form__item}>Confirm password <span className={styles.input_required}>*</span></div>
       <input 
         type="password" 
         className={cn(styles.input, styles.form__item)}
@@ -169,17 +169,17 @@ const SignupForm = () => {
 
       <h3 className={styles.section__header}>Personal info</h3>
 
-      <div className={styles.form__item}>Sex</div>
+      <div className={styles.form__item}>Gender</div>
       <div className="flex-wrapper">
         <div className={styles.radio__item}>
           <input 
             id="male" 
             type="radio" 
-            name="sex" 
+            name="gender" 
             className={cn(styles.input, styles.form__item_inline, styles.input_radio)}
             value="male"
             checked={isMale}
-            onChange={handleSexChange}
+            onChange={handleGenderChange}
           />       
           <label for="male">Male</label> 
         </div>
@@ -187,11 +187,11 @@ const SignupForm = () => {
           <input 
             id="female" 
             type="radio" 
-            name="sex" 
+            name="gender" 
             className={cn(styles.input, styles.form__item_inline, styles.input_radio)}
             value="female"
             checked={!isMale}
-            onChange={handleSexChange}
+            onChange={handleGenderChange}
           /> 
           <label for="female">Female</label>
         </div>

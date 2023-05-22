@@ -9,6 +9,8 @@ import { addRecipe } from '../../redux/recipes/recipesSlice';
 import cn from 'classnames';
 import { selectUser } from '../../redux/user/userSlice';
 import { Modal } from 'react-bootstrap';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../../firebaseConfig';
 
 const AddRecipe = () => {
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ const AddRecipe = () => {
   const [currentDifficulty, setCurrentDifficulty] = useState(1);
   const [currentIngredients, setCurrentIngredients] = useState([]);
   const [currentSteps, setCurrentSteps] = useState([]);
-  const [currentCover, setCurrentCover] = useState(null);
+  const [currentCover, setCurrentCover] = useState('');
   const [addStatus, setAddStatus] = useState('idle');
   const [isModalShown, setIsModalShown] = useState(false);
   const [emptyTitleError, setEmptyTitleError] = useState(false);
@@ -110,13 +112,21 @@ const AddRecipe = () => {
     navigate(-1);
   }
 
-  const handleChangeCoverClick = () => {
-    let randomCover = currentCover;
-    const coversCount = 10;
-    while (randomCover === currentCover) {
-      randomCover = Math.floor(Math.random() * coversCount) + 1
-    }
-    setCurrentCover(randomCover);
+  const handleChangeCoverClick = (event) => {
+    const file = event.target.files[0];
+    const storageRef = ref(storage, file.name);
+
+    const task = uploadBytesResumable(storageRef, file);
+
+    task.on('state_changed', null, null, () => {
+      getDownloadURL(task.snapshot.ref).then((url) => {
+        setCurrentCover(url);
+      });
+    });
+  }
+
+  const handleResetCoverClick = () => {
+    setCurrentCover('');
   }
 
   return (
@@ -124,7 +134,7 @@ const AddRecipe = () => {
       <header 
         className={styles.recipePage__header}
         style={{
-          backgroundImage: currentCover && `url(${require(`../RecipeInfo/res/recipe_cover_${currentCover}.jpg`)})`
+          backgroundImage: currentCover !== '' && `url(${currentCover})`
         }}
       >
         <div className={styles.recipe__data}>
@@ -160,7 +170,12 @@ const AddRecipe = () => {
             </select>        
           </div>
 
-          <Button className={styles.button_changeCover} onClick={handleChangeCoverClick}>Change cover</Button>
+          <div className={styles.section_changeCover} >
+            <div>Set a cover image: </div>
+            <input type="file" accept="image/*" onChange={handleChangeCoverClick} />
+          </div>
+          <Button className={styles.button_resetCover} onClick={handleResetCoverClick}>Reset cover</Button>
+
         </div>         
       </header>
       <div className={styles.recipePage__main}>

@@ -9,8 +9,8 @@ const Recipe = ({id, title, timeInMinutes, difficulty, cover}) => {
       <div 
         className={styles.recipe__image} 
         style={{
-          backgroundImage: cover ? 
-          `url(${require(`../RecipeInfo/res/recipe_cover_${cover}.jpg`)})` :
+          backgroundImage: cover !== '' ? 
+          `url(${cover})` :
           `url(${require("./res/breakfast.png")})`
         }} 
       />

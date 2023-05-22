@@ -36,14 +36,18 @@ const ProductsTableRow = ({
   useEffect(() => {
     if (debouncedTitle) {
       const getProducts = async () => {
-        const response = await fetch(requestString(debouncedTitle));
-        const products = await response.json();
-        setSearchProducts(
-          products.foods
-          .filter(p => p.dataType ===	"Survey (FNDDS)")
-          .sort(p => p.description.toLowerCase().startsWith(debouncedTitle.toLowerCase()) ? -1 : 1)
-          .slice(0, 10)
-        );
+        try {
+          const response = await fetch(requestString(debouncedTitle));
+          const products = await response.json();
+          setSearchProducts(
+            products.foods
+            .filter(p => p.dataType ===	"Survey (FNDDS)")
+            .sort(p => p.description.toLowerCase().startsWith(debouncedTitle.toLowerCase()) ? -1 : 1)
+            .slice(0, 10)
+          );
+        } catch(err) {
+          console.log(err);
+        }
       }
       getProducts();
     }
@@ -108,20 +112,22 @@ const ProductsTableRow = ({
           <div className={styles.td_number}>{index + 1}</div>
         </td>
         <td className={tdClasses}>
-          <input 
-            type='text' 
-            className={styles.input} 
-            value={title} 
-            onChange={handleTitleChange}
-            onFocus={() => setShowSearchResults(true)}
-          /> 
-          <Button 
-            className={styles.button_accept}
-            variant={{isCRUD: true, isAccept: true}} 
-            onClick={() => productToAdd && handleAcceptClick({
-              title, count, proteins, fats, carbohydrates, energy
-            })}
-          />
+          <div className={styles.inputWrapper}>
+            <input 
+              type='text' 
+              className={styles.input} 
+              value={title} 
+              onChange={handleTitleChange}
+              onFocus={() => setShowSearchResults(true)}
+            /> 
+            <Button 
+              className={styles.button_accept}
+              variant={{isCRUD: true, isAccept: true}} 
+              onClick={() => productToAdd && handleAcceptClick({
+                title, count, proteins, fats, carbohydrates, energy
+              })}
+            />
+          </div>
           {
             searchProducts.length > 0 && showSearchResults &&
             <ul className={styles.searchResults}>

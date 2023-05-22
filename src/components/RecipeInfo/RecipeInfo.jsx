@@ -9,6 +9,8 @@ import Button from '../Button/Button';
 import { uid } from 'uid';
 import Modal from 'react-bootstrap/Modal';
 import cn from 'classnames';
+import { storage } from '../../firebaseConfig';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 const RecipeInfo = () => {
   const { id } = useParams();
@@ -32,7 +34,7 @@ const RecipeInfo = () => {
 
   const {title, time, difficulty, ingredients, steps, cover} = 
     recipes.find(r => r.id === id) || 
-    {title: '', time: 0, difficulty: 1, ingredients: [], steps: [], cover: null};
+    {title: '', time: 0, difficulty: 1, ingredients: [], steps: [], cover: ''};
 
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentTime, setCurrentTime] = useState(time);
@@ -163,14 +165,23 @@ const RecipeInfo = () => {
     navigate(-1);
   }
 
-  const handleChangeCoverClick = () => {
-    let randomCover = currentCover;
-    const coversCount = 10;
-    while (randomCover === currentCover) {
-      randomCover = Math.floor(Math.random() * coversCount) + 1
-    }
-    setCurrentCover(randomCover);
-    dispatch(updateRecipe({id, cover: randomCover}));
+  const handleChangeCoverClick = (event) => {
+    const file = event.target.files[0];
+    const storageRef = ref(storage, file.name);
+
+    const task = uploadBytesResumable(storageRef, file);
+
+    task.on('state_changed', null, null, () => {
+      getDownloadURL(task.snapshot.ref).then((url) => {
+        setCurrentCover(url);
+        dispatch(updateRecipe({id, cover: url}));
+      });
+    });
+  }
+
+  const handleResetCoverClick = () => {
+    setCurrentCover('');
+    dispatch(updateRecipe({id, cover: ''}));
   }
 
   return (
@@ -178,7 +189,7 @@ const RecipeInfo = () => {
       <header 
         className={styles.recipePage__header} 
         style={{
-          backgroundImage: currentCover && `url(${require(`./res/recipe_cover_${currentCover}.jpg`)})`
+          backgroundImage: currentCover !== '' && `url(${currentCover})`
         }}>
         <div className={styles.recipe__data}>
           <div className="flex-wrapper_centered">
@@ -272,7 +283,11 @@ const RecipeInfo = () => {
             }            
           </div>
 
-          <Button className={styles.button_changeCover} onClick={handleChangeCoverClick}>Change cover</Button>
+          <div className={styles.section_changeCover} >
+            <div>Set a cover image: </div>
+            <input type="file" accept="image/*" onChange={handleChangeCoverClick} />
+          </div>
+          <Button className={styles.button_resetCover} onClick={handleResetCoverClick}>Reset cover</Button>
 
         </div>         
       </header>

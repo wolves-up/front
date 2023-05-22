@@ -29,7 +29,7 @@ const Settings = () => {
     setName(event.target.value);
   }
 
-  const handleSexChange = (event) => {
+  const handleGenderChange = (event) => {
     setIsMale(event.target.value === 'male');
   }
 
@@ -93,17 +93,17 @@ const Settings = () => {
         onChange={handleNameChange}
       />
 
-      <div className={styles.form__item}>Sex</div>
+      <div className={styles.form__item}>Gender</div>
       <div className="flex-wrapper">
         <div className={styles.radio__item}>
           <input 
             id="male" 
             type="radio" 
-            name="sex" 
+            name="gender" 
             className={cn(styles.input, styles.form__item_inline, styles.input_radio)}
             value="male"
             checked={isMale}
-            onChange={handleSexChange}
+            onChange={handleGenderChange}
           />       
           <label for="male">Male</label> 
         </div>
@@ -111,11 +111,11 @@ const Settings = () => {
           <input 
             id="female" 
             type="radio" 
-            name="sex" 
+            name="gender" 
             className={cn(styles.input, styles.form__item_inline, styles.input_radio)}
             value="female"
             checked={!isMale}
-            onChange={handleSexChange}
+            onChange={handleGenderChange}
           /> 
           <label for="female">Female</label>
         </div>

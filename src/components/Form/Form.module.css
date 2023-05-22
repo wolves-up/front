@@ -87,3 +87,7 @@ input:focus {
   border-radius: 12px;
   outline: none;
 }
+
+.input_required {
+  color: red;
+}
