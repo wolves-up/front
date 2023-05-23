@@ -168,7 +168,7 @@ const RecipeInfo = () => {
 
   const handleChangeCoverClick = (event) => {
     const file = event.target.files[0];
-    const storageRef = ref(storage, file.name);
+    const storageRef = ref(storage, id);
 
     const task = uploadBytesResumable(storageRef, file);
 

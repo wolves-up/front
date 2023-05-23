@@ -25,6 +25,7 @@ const AddRecipe = () => {
   const [addStatus, setAddStatus] = useState('idle');
   const [isModalShown, setIsModalShown] = useState(false);
   const [emptyTitleError, setEmptyTitleError] = useState(false);
+  const [coverId] = useState(uid());
 
   const user = useSelector(selectUser);
 
@@ -115,7 +116,7 @@ const AddRecipe = () => {
 
   const handleChangeCoverClick = (event) => {
     const file = event.target.files[0];
-    const storageRef = ref(storage, file.name);
+    const storageRef = ref(storage, coverId);
 
     const task = uploadBytesResumable(storageRef, file);
 
