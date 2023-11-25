@@ -114,7 +114,7 @@ const ReportsMap = () => {
             zoom: 9}
         }
         width={'100%'}
-        height={800}
+        height={900}
         onClick={(e) => {setSelectedItem(undefined)}}
         >
             {placemarks.map(p => createPlaceMark(p))}

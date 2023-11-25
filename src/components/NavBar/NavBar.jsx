@@ -2,26 +2,24 @@ import { Link } from "react-router-dom";
 import NavBarItem from "../NavBarItem/NavBarItem";
 import logo from "../../images/logo.svg";
 import styles from "./Navbar.module.css";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/user/userSlice";
 
 const NavBar = () => {
-  const user = useSelector(selectUser);
+  const user = localStorage.getItem('access_token');
   return (
     <div className={styles.sidebar}>
       <Link to="/news">Навигатор чистоты</Link>
       <ul className={styles.nav}>
         <NavBarItem link={"/news"} icon={"overview"} text={"Новости"} />
-        {!user && (
+        {user && (
         <NavBarItem link={"/post"} icon={"settings"} text={"Оставить новость"} />
         )}
-        {!user && (
+        {user && (
         <NavBarItem link={"/reports"} icon={"overview"} text={"Обращения"} />
         )}
-        {!user && (
+        {user && (
           <NavBarItem link={"/report"} icon={"recipes"} text={"Сообщить о проблеме"} />
         )}
-        {!user && (
+        {user && (
         <NavBarItem link={"/map"} icon={"meal"} text={"Карта обращений"} />
         )}
       </ul>

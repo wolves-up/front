@@ -2,6 +2,9 @@
   display: flex;
   justify-content: right;
   margin-bottom: 30px;
+  position: fixed;
+  top: 8px;
+  right: 8px;
 }
 
 .greeting__header {

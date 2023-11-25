@@ -39,7 +39,7 @@ const LoginForm = () => {
       else {
         throw Error("Wrong email or password");
       }
-      navigate('/');
+      navigate('/news');
     } catch(err) {
       setError('Invalid email or password');
     };
