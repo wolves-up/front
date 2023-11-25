@@ -11,9 +11,11 @@ import AddRecipe from "./components/AddRecipe/AddRecipe";
 import Recipes from "./components/Recipes/Recipes";
 import Settings from "./components/Settings/Settings";
 import ReportForm from "./components/ReportForm/ReportForm";
+import { YMaps, Map, useYMaps } from '@pbe/react-yandex-maps';
 
-function App() {
+function App() {  
   return (
+    <YMaps>
       <Router>
         <Routes>
           {
@@ -46,6 +48,8 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
+      
+    </YMaps>
   );
 }
 
