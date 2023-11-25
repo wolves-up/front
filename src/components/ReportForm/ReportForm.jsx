@@ -44,9 +44,11 @@ const ReportForm = () => {
 
   const serviceList = ["Вода", "Свет", "Газ", "Отопление", "Улица", "Другое"];
 
+  const tagOptions = tagList.map((item) => ({ label: item }));
+
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [service, setService] = useState("");
+  const [service, setService] = useState({'label':'Вода'});
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -62,11 +64,28 @@ const ReportForm = () => {
     setLoading(true);
 
     try {
+      const imgs = await Promise.all(images.map(async i => {
+        console.log(i);
+        const data = i.data
+        const res = await fetch("http://46.146.211.12:25540/content", {
+          method: "POST",
+          body: data,
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('access_token')}`,
+            "Content-type": "application/octet-stream",
+          },
+        });
+        const uploadId = await res.json();
+        console.log(uploadId);
+        return uploadId;
+      }));
+
       const body = {
         title: title,
         message: message,
         responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         tags: tags ? tags : [],
+        contentIds: imgs ? imgs : [],
       };
       if(placemark && placemark[0] > 0) {
         body.location = {
@@ -74,6 +93,7 @@ const ReportForm = () => {
           longitude: placemark[1],
         };
       }
+      console.log(body);
       const res = await fetch("http://46.146.211.12:25540/reports/create", {
         method: "POST",
         body: JSON.stringify(body),
@@ -138,10 +158,12 @@ const ReportForm = () => {
         <Autocomplete
           disablePortal
           options={serviceList.map((item) => ({ label: item }))}
+          getOptionLabel={(option) => option.label}
+          isOptionEqualToValue ={(option, value) => { return option.label === value.label}}
           fullWidth
           value={service}
           renderInput={(params) => <TextField {...params} label="Категория" />}
-          onChange={(e) => setService(e.target.value)}
+          onChange={(e, v) => setService(v)}
         />
       </Box>
 
@@ -149,14 +171,15 @@ const ReportForm = () => {
         <Autocomplete
           multiple
           fullWidth
-          options={tagList.map((item) => ({ label: item }))}
+          options={tagOptions}
           getOptionLabel={(option) => option.label}
+          isOptionEqualToValue ={(option, value) => { return option.label === value.label}}
           filterSelectedOptions
           values={tags}
           renderInput={(params) => (
             <TextField {...params} label="Теги" placeholder="Тег" />
           )}
-          onChange={(event, values) => setTags(values.map(v => v.label))}
+          onChange={(event, values) => setTags(values)}
         />
       </Box>
 
