@@ -1,5 +1,3 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebaseConfig";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/user/userSlice";
@@ -91,30 +89,24 @@ const SignupForm = () => {
 
     if (!errorOcurred) {
       try {
-        const userAuth = await createUserWithEmailAndPassword(auth, email, password);
-        const nameToStore = name === '' ? 'user' : name;
-        try {
-          await setDoc(doc(db, 'users', userAuth.user.uid), {
-            name: nameToStore,
-            isMale,
-            birthDate,
-            height: height,
-            weight: weight
-          });
-        } catch(err) {
-          console.log(err);
+        const registerData = await fetch(`http://46.146.211.12:25540/register?login=${email}&password=${password}`, {
+          method: "GET",
+        });
+        if (!registerData.ok) {
+          throw Error("Wrong email or password");
         }
-        dispatch(login({
-          email: userAuth.user.email,
-          id: userAuth.user.uid,
-          name: nameToStore,
-          isMale,
-          birthDate: birthDate || '2000-01-01',
-          height: height,
-          weight: weight,
-          activityLevel: 2
-        })); 
-        navigate('/dashboard');
+
+        const userAuth = await fetch(`http://46.146.211.12:25540/login?login=${email}&password=${password}`, {
+          method: "GET",
+          });
+        if (userAuth.ok) {
+          const token = await userAuth.text();
+          localStorage.setItem('access_token', token);
+        }
+        else {
+          throw Error("Wrong email or password");
+        }
+        navigate('/');
       } catch(err) {
         console.log(err);
         setError('An error ocurred');

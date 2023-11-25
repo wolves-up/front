@@ -16,28 +16,30 @@ function App() {
   return (
       <Router>
         <Routes>
-          {/* <Route path='/' element={<RequireUnauth loginButtonRequired><Main /></RequireUnauth>} />
-          <Route path='/signup' element={<RequireUnauth><SignupForm /></RequireUnauth>} />
-          <Route path='/login' element={<RequireUnauth><LoginForm /></RequireUnauth>} />
-          <Route path='/dashboard' element={<RequireAuth><Dashboard /></RequireAuth>} />
+          {
+          /*<Route path='/dashboard' element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path='/recipes' element={<RequireAuth><Recipes /></RequireAuth>} />
           <Route path='/add_recipe' element={<RequireAuth><AddRecipe /></RequireAuth>} />
           <Route path='/recipe/:id' element={<RequireAuth><RecipeInfo /></RequireAuth>} />
-          <Route path='/settings' element={<RequireAuth><Settings /></RequireAuth>} /> */}
+          <Route path='/settings' element={<RequireAuth><Settings /></RequireAuth>} /> 
+          <Route path='/' element={<RequireUnauth loginButtonRequired><Main /></RequireUnauth>} />*/}
+          
+          <Route path='/signup' element={<RequireUnauth><SignupForm /></RequireUnauth>} />
+          <Route path='/login' element={<RequireUnauth><LoginForm /></RequireUnauth>} />
           <Route
             path="/"
             element={
-              <RequireUnauth loginButtonRequired>
+              <RequireAuth loginButtonRequired>
                 {/* <Dashboard /> */}
-              </RequireUnauth>
+              </RequireAuth>
             }
           />
           <Route
             path="/report"
             element={
-              <RequireUnauth>
+              <RequireAuth>
                 <ReportForm />
-              </RequireUnauth>
+              </RequireAuth>
             }
           />
           <Route path="/not_found" element={<NotFoundPage />} />

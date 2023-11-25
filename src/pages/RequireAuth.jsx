@@ -1,11 +1,9 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "../redux/user/userSlice";
 import { Navigate } from "react-router-dom";
 import NavBar from "../components/NavBar/NavBar";
 import HeaderAuth from "../components/HeaderAuth/HeaderAuth";
 
 const RequireAuth = ({children}) => {
-  const user = useSelector(selectUser);
+  const user = localStorage.getItem('access_token');
   if (!user) {
     return <Navigate replace to="/login" />;
   }
