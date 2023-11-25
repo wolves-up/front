@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 import { minutesToHoursMinutesString } from "../../utils/converters";
 import EditableListItem from "../EditableListItem/EditableListItem";
 import styles from "./NewsArticle.module.css";
@@ -17,35 +17,27 @@ import { storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Typography } from "@mui/material";
 
-const NewsArticle = () => {
-  const { id } = useParams();
-  const recipes = useSelector(selectRecipes);
+const NewsArticle = ({
+  name,
+  title,
+  date,
+  status,
+  category,
+  tags,
+  images,
+  message,
+  cover,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!recipes.map((r) => r.id).includes(id)) {
-      navigate("/not_found", { replace: true });
-    }
-  });
-
-  const { title, cover, date, content, comments } = recipes.find(
-    (r) => r.id === id
-  ) || {
-    title: "",
-    cover: "",
-    date: null,
-    content: "",
-    comments: [],
-  };
-
+  console.log(cover);
   return (
     <>
       <div className={styles.recipePage}>
         <header
           className={styles.recipePage__header}
           style={{
-            backgroundImage: cover !== "" && `url(${cover})`,
+            backgroundImage: cover && `url(http://46.146.211.12:25540/content/${cover})`,
           }}
         >
           <div className={styles.recipe__data}>
@@ -57,13 +49,23 @@ const NewsArticle = () => {
         <div className={styles.recipePage__main}>
           {date && (
             <Typography variant="body2" component="div" color="text.secondary">
-              {date}
+              {new Date(date).toGMTString()}
             </Typography>
           )}
-          <div>{content}</div>
+          <div>{message}</div>
+        </div>
+        <div 
+          style={{
+            paddingBottom: 10,
+            paddingLeft: 20
+          }}
+          
+        >
+          <Button className="ToNews" onClick={(e) => navigate(`/news/${name}`)}>
+            Перейти к полной новости
+          </Button>
         </div>
       </div>
-      <Typography variant="h2">Комментарии</Typography>
     </>
   );
 };

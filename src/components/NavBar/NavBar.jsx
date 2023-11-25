@@ -13,13 +13,17 @@ const NavBar = () => {
       <ul className={styles.nav}>
         <NavBarItem link={"/news"} icon={"overview"} text={"Новости"} />
         {!user && (
-          <NavBarItem
-            link={"/report"}
-            icon={"recipes"}
-            text={"Сообщить о проблеме"}
-          />
+        <NavBarItem link={"/post"} icon={"settings"} text={"Оставить новость"} />
         )}
-        <NavBarItem link={"/map"} icon={"overview"} text={"Карта обращений"} />
+        {!user && (
+        <NavBarItem link={"/reports"} icon={"overview"} text={"Обращения"} />
+        )}
+        {!user && (
+          <NavBarItem link={"/report"} icon={"recipes"} text={"Сообщить о проблеме"} />
+        )}
+        {!user && (
+        <NavBarItem link={"/map"} icon={"meal"} text={"Карта обращений"} />
+        )}
       </ul>
     </div>
   );

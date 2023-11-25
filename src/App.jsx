@@ -14,6 +14,9 @@ import ReportsMap from "./components/ReportsMap/ReportsMap";
 import ReportForm from "./components/ReportForm/ReportForm";
 import { YMaps, Map, useYMaps } from '@pbe/react-yandex-maps';
 import Reports from "./components/Reports/Reports";
+import News from "./components/News/News";
+import NewsArticleFull from "./components/NewsArticleFull/NewsArticleFull"
+import NewsArticleForm from "./components/NewsArticleForm/NewsArticleForm";
 
 function App() {  
   return (
@@ -64,14 +67,38 @@ function App() {
           />
           <Route path="/map" element={
             <RequireAuth>
-              <ReportsMap></ReportsMap>
+              <ReportsMap/>
             </RequireAuth>} />
           <Route
             path="/reports"
             element={
-              <RequireUnauth>
+              <RequireAuth>
                 <Reports />
-              </RequireUnauth>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/news"
+            element={
+              <RequireAuth>
+                <News />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/news/:id"
+            element={
+              <RequireAuth>
+                <NewsArticleFull />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/post"
+            element={
+              <RequireAuth>
+                <NewsArticleForm />
+              </RequireAuth>
             }
           />
           <Route path="/not_found" element={<NotFoundPage />} />
