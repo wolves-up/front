@@ -26,18 +26,16 @@ const Report = ({
   const statuses = useMemo(() => ["Новое", "В работе", "Завершено"]);
   const [newStatus, setNewStatus] = useState(statuses[status]);
 
-  const handleStatusChange = (event) => {
-    setNewStatus(event.target.value);
-    console.log(event.target.value);
-    // fetch
+  const handleStatusChange = (e) => {
+    setNewStatus(e.target.value);
+    console.log(e.target.value);
+    // fetch    
   };
-
-  useEffect(() => {console.log(name, title, date, status, category, tags, images, message)}, []);
 
   return (
     <Card sx={{ width: 300, maxWidth: 345, padding: 2 }}>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: "red" }}>{name ? name[0] : 'A'}</Avatar>}
+        avatar={<Avatar sx={{ bgcolor: "red" }}>{name ? name[0] : "A"}</Avatar>}
         title={name}
         subheader={date}
       />

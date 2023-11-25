@@ -12,9 +12,9 @@ const Reports = () => {
           method: "GET",
           headers: {
             "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            // Authorization:
-            //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3N2Y4YmIzLWYzNWYtNGYyMS1iZTkxLWI0YjJkZGIwZDczNyIsImV4cCI6MTcwMzUxNjI4OCwiaXNzIjoiVXRpbGl0eVNlcnZpY2VBcGkiLCJhdWQiOiJVdGlsaXR5RnJvbnQifQ.W6IBOIQt9Hv6UB3C3xUSTeX4tL_VrlXVjRCYdqIMrI0",
+            // Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3N2Y4YmIzLWYzNWYtNGYyMS1iZTkxLWI0YjJkZGIwZDczNyIsImV4cCI6MTcwMzUxNjI4OCwiaXNzIjoiVXRpbGl0eVNlcnZpY2VBcGkiLCJhdWQiOiJVdGlsaXR5RnJvbnQifQ.W6IBOIQt9Hv6UB3C3xUSTeX4tL_VrlXVjRCYdqIMrI0",
           },
         });
         const jsonRes = await res.json();

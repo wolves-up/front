@@ -29,9 +29,23 @@ function App() {
           <Route path='/recipe/:id' element={<RequireAuth><RecipeInfo /></RequireAuth>} />
           <Route path='/settings' element={<RequireAuth><Settings /></RequireAuth>} /> 
           <Route path='/' element={<RequireUnauth loginButtonRequired><Main /></RequireUnauth>} />*/}
-          
-          <Route path='/signup' element={<RequireUnauth><SignupForm /></RequireUnauth>} />
-          <Route path='/login' element={<RequireUnauth><LoginForm /></RequireUnauth>} />
+
+          <Route
+            path="/signup"
+            element={
+              <RequireUnauth>
+                <SignupForm />
+              </RequireUnauth>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RequireUnauth>
+                <LoginForm />
+              </RequireUnauth>
+            }
+          />
           <Route
             path="/"
             element={
@@ -52,11 +66,18 @@ function App() {
             <RequireAuth>
               <ReportsMap></ReportsMap>
             </RequireAuth>} />
+          <Route
+            path="/reports"
+            element={
+              <RequireUnauth>
+                <Reports />
+              </RequireUnauth>
+            }
+          />
           <Route path="/not_found" element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
-      
     </YMaps>
   );
 }
