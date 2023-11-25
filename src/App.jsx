@@ -11,12 +11,13 @@ import AddRecipe from "./components/AddRecipe/AddRecipe";
 import Recipes from "./components/Recipes/Recipes";
 import Settings from "./components/Settings/Settings";
 import ReportForm from "./components/ReportForm/ReportForm";
+import Reports from "./components/Reports/Reports";
 
 function App() {
   return (
-      <Router>
-        <Routes>
-          {/* <Route path='/' element={<RequireUnauth loginButtonRequired><Main /></RequireUnauth>} />
+    <Router>
+      <Routes>
+        {/* <Route path='/' element={<RequireUnauth loginButtonRequired><Main /></RequireUnauth>} />
           <Route path='/signup' element={<RequireUnauth><SignupForm /></RequireUnauth>} />
           <Route path='/login' element={<RequireUnauth><LoginForm /></RequireUnauth>} />
           <Route path='/dashboard' element={<RequireAuth><Dashboard /></RequireAuth>} />
@@ -24,26 +25,34 @@ function App() {
           <Route path='/add_recipe' element={<RequireAuth><AddRecipe /></RequireAuth>} />
           <Route path='/recipe/:id' element={<RequireAuth><RecipeInfo /></RequireAuth>} />
           <Route path='/settings' element={<RequireAuth><Settings /></RequireAuth>} /> */}
-          <Route
-            path="/"
-            element={
-              <RequireUnauth loginButtonRequired>
-                {/* <Dashboard /> */}
-              </RequireUnauth>
-            }
-          />
-          <Route
-            path="/report"
-            element={
-              <RequireUnauth>
-                <ReportForm />
-              </RequireUnauth>
-            }
-          />
-          <Route path="/not_found" element={<NotFoundPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Router>
+        <Route
+          path="/"
+          element={
+            <RequireUnauth loginButtonRequired>
+              {/* <Dashboard /> */}
+            </RequireUnauth>
+          }
+        />
+        <Route
+          path="/report"
+          element={
+            <RequireUnauth>
+              <ReportForm />
+            </RequireUnauth>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <RequireUnauth>
+              <Reports />
+            </RequireUnauth>
+          }
+        />
+        <Route path="/not_found" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
   );
 }
 
