@@ -1,0 +1,122 @@
+
+.recipePage {
+  margin-top: 50px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.recipePage__header {
+  min-height: 200px;
+  background: var(--recipe-background);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: inherit;
+}
+
+.recipe__data {
+  width: 50%;
+  min-height: inherit;
+  padding: 20px;
+  background-color: rgba(255, 252, 252, 0.76);
+  backdrop-filter: blur(3px);
+  border-radius: 12px 0 0 12px;
+}
+
+.recipePage__title {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  min-height: 60px;
+  margin: 15px 0;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.recipePage__difficulty, .recipePage__time {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.recipePage__time {
+  height: 24px;
+}
+
+.difficulty__value {
+  margin-left: 6px;
+}
+
+.recipePage__main {
+  padding: 20px;
+}
+
+.section__header {
+  margin-top: 30px;
+}
+
+.recipe__time {
+  display: flex;
+  align-items: center;
+  max-width: 80px;
+  min-height: 22px;
+  font-size: 0.8rem;
+}
+
+.recipe__time::before {
+  content: "";
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin-right: 8px;
+  background-image: url("../Recipe/res/timer.svg");
+  background-repeat: no-repeat;
+}
+
+
+.button_add {
+  width: 16px;
+  height: 16px;
+  margin-top: 37px;
+  margin-left: 10px;
+}
+
+.button_edit {
+  margin-left: 10px;
+}
+
+.recipe__footerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.section_changeCover {
+  margin-top: 20px;
+}
+
+.button_resetCover {
+  margin-top: 10px;
+}
+
+.input {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.input:focus {
+  border: none;
+  border-bottom: 1px solid var(--border-color-dark);
+}
+
+.input_time {
+  border: 1px solid var(--border-color);
+}
+
+.input_time:focus {
+  border: 1px solid var(--border-color-dark);
+}

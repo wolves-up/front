@@ -20,16 +20,15 @@ const HeaderAuth = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.greeting}>
-        <h3 className={styles.greeting__header}>Hello, {user.name}!</h3>
-        <div className={styles.greeting__text}>Let`s plan your meal for today!</div>
-      </div>
-      <Button
-        onClick={handleClick}
-        variant={{isLogout: true}}
-      >
-        Log Out
-      </Button>
+      {!user ? (
+        <Button onClick={handleClick} variant={{ isLogout: true }}>
+          Выход
+        </Button>
+      ) : (
+        <Button onClick={handleClick} variant={{ isLogout: true }}>
+          Вход
+        </Button>
+      )}
     </header>
   );
 }
