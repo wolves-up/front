@@ -1,6 +1,3 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db } from "../../firebaseConfig";
 import { login } from "../../redux/user/userSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,31 +29,17 @@ const LoginForm = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      const userAuth = await signInWithEmailAndPassword(auth, email, password);
-      try {
-        const docSnap = await getDoc(doc(db, 'users', userAuth.user.uid));
-        const userData = docSnap.exists() ? docSnap.data() : {
-          name: 'user',
-          isMale: true,
-          birthDate: '2000.01.01',
-          height: 170,
-          weight: 60
-        };
-        if (!docSnap.exists()) {
-          await setDoc(doc(db, 'users', userAuth.user.uid), userData);
-        }
-        dispatch(login({
-          email: userAuth.user.email,
-          id: userAuth.user.uid,
-          ...userData
-        }));
-        setError('');
-        navigate('/dashboard');
-      } catch(err) {
-        console.log(err);
-        setError('An error ocurred');
-        signOut(auth);
+      const userAuth = await fetch(`http://46.146.211.12:25540/login?login=${email}&password=${password}`, {
+        method: "GET",
+        });
+      if (userAuth.ok) {
+        const token = await userAuth.text();
+        localStorage.setItem('access_token', token);
       }
+      else {
+        throw Error("Wrong email or password");
+      }
+      navigate('/');
     } catch(err) {
       setError('Invalid email or password');
     };

@@ -7,9 +7,9 @@ import HeaderAuth from "../components/HeaderAuth/HeaderAuth";
 import { Navigate } from "react-router-dom";
 
 const RequireUnauth = ({children, loginButtonRequired}) => {
-  const user = useSelector(selectUser);
+  const user = localStorage.getItem('access_token');
   if (user) {
-    return <Navigate replace to="/dashboard" />;
+    return <Navigate replace to="/" />;
   }
   return (
     <div className="container flex-wrapper">

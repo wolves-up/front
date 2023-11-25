@@ -9,18 +9,18 @@ import { useNavigate } from 'react-router-dom';
 const HeaderAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  const user = localStorage.getItem('access_token');
 
   const handleClick = () => {
     signOut(auth).then(() => {
-      dispatch(logout());
+      dispatch(() => { localStorage.clear(); });
       navigate('/');
     })
   }
 
   return (
     <header className={styles.header}>
-      {!user ? (
+      {user ? (
         <Button onClick={handleClick} variant={{ isLogout: true }}>
           Выход
         </Button>

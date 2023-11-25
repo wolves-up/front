@@ -1,6 +1,3 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db } from "../../firebaseConfig";
 import { login } from "../../redux/user/userSlice";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +16,7 @@ import {
 } from "@mui/material";
 import { UploadFile, Clear } from "@mui/icons-material";
 import { Stack } from "react-bootstrap";
+import { YMaps, Map, useYMaps, Placemark } from '@pbe/react-yandex-maps';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -50,14 +48,11 @@ const ReportForm = () => {
   const [message, setMessage] = useState("");
   const [service, setService] = useState("");
   const [tags, setTags] = useState([]);
-  const [location, setLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [placemark, setPlacemark] = useState([0,0]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -67,18 +62,24 @@ const ReportForm = () => {
     setLoading(true);
 
     try {
+      const body = {
+        title: title,
+        message: message,
+        responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        tags: tags ? tags : [],
+      };
+      if(placemark && placemark[0] > 0) {
+        body.location = {
+          latitude: placemark[0],
+          longitude: placemark[1],
+        };
+      }
       const res = await fetch("http://46.146.211.12:25540/reports/create", {
         method: "POST",
-        body: JSON.stringify({
-          title: title,
-          message: message,
-          content: images,
-          tags: tags,
-          responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          location: location,
-        }),
+        body: JSON.stringify(body),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
         },
       });
 
@@ -86,6 +87,7 @@ const ReportForm = () => {
       console.log(jsonRes);
 
       setSnackbarMessage("Обращение отправлено!");
+      navigate('/news');
     } catch (err) {
       console.log(err);
       setSnackbarMessage("Ошибка");
@@ -137,6 +139,7 @@ const ReportForm = () => {
           disablePortal
           options={serviceList.map((item) => ({ label: item }))}
           fullWidth
+          value={service}
           renderInput={(params) => <TextField {...params} label="Категория" />}
           onChange={(e) => setService(e.target.value)}
         />
@@ -149,10 +152,11 @@ const ReportForm = () => {
           options={tagList.map((item) => ({ label: item }))}
           getOptionLabel={(option) => option.label}
           filterSelectedOptions
+          values={tags}
           renderInput={(params) => (
             <TextField {...params} label="Теги" placeholder="Тег" />
           )}
-          onChange={(e) => setTags(e.target.value)}
+          onChange={(event, values) => setTags(values.map(v => v.label))}
         />
       </Box>
 
@@ -178,6 +182,23 @@ const ReportForm = () => {
           </Box>
         ))}
       </Box>
+
+      <Map 
+        defaultState={
+          {center: [56.84, 60.60],
+          zoom: 9}
+        }
+        width={450}
+        height={450}
+        onClick={(e) => {
+          const coords = e.get('coords');
+          setPlacemark(coords);
+          console.log(coords);
+        }}>
+          <Placemark key={'Test'}
+            geometry={placemark}>
+          </Placemark>
+      </Map>
 
       <Button type="submit" variant="contained" fullWidth>
         Отправить
