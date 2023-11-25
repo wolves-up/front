@@ -10,6 +10,7 @@ import RecipeInfo from "./components/RecipeInfo/RecipeInfo";
 import AddRecipe from "./components/AddRecipe/AddRecipe";
 import Recipes from "./components/Recipes/Recipes";
 import Settings from "./components/Settings/Settings";
+import ReportsMap from "./components/ReportsMap/ReportsMap";
 import ReportForm from "./components/ReportForm/ReportForm";
 import { YMaps, Map, useYMaps } from '@pbe/react-yandex-maps';
 import Reports from "./components/Reports/Reports";
@@ -47,6 +48,10 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="/map" element={
+            <RequireAuth>
+              <ReportsMap></ReportsMap>
+            </RequireAuth>} />
           <Route path="/not_found" element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

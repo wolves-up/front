@@ -1,0 +1,30 @@
+.rightSidebar {
+    width: 50%;
+    max-width: 500px;
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    z-index: 401;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: calc(100vh - 120px);
+}
+
+.reportCard {
+    position: relative;
+    background: #1e2841 !important;
+    border-radius: 10px !important;
+    max-height: calc(90vh - 2vw) !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+
+    color: #eeeeee !important;
+    
+    @mixin scroll;
+}
+
+.reportCard img {
+    padding-bottom: 10px;
+}

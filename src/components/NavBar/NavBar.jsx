@@ -19,6 +19,7 @@ const NavBar = () => {
             text={"Сообщить о проблеме"}
           />
         )}
+        <NavBarItem link={"/map"} icon={"overview"} text={"Карта обращений"} />
       </ul>
     </div>
   );
