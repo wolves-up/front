@@ -2,6 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { YMaps, Map, useYMaps, Placemark } from '@pbe/react-yandex-maps';
+import {
+    Autocomplete,
+    Avatar,
+    Box,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Chip,
+    Stack,
+    TextField,
+    Typography,
+  } from "@mui/material";
+import Report from "../Report/Report";
 
 import styles from './ReportsMap.module.css';
 
@@ -61,13 +75,30 @@ const ReportsMap = () => {
   
   const [cardImages, setCardImages] = useState([]);
 
+  const statusMap = {
+    0: 'Новый',
+    1: 'В очереди',
+    2: 'В работе',
+    3: 'Переоткрыт',
+    4: 'Завершен',
+    5: 'В архиве',
+    6: 'Удалён'
+  };
+
   return (
     <div>
-        {selectedItem && 
+        {selectedItem &&
         (<div className={styles.rightSidebar}>
             <div className={styles.reportCard}>
                 <h3>{selectedItem.title}</h3>
                 <p>{selectedItem.message}</p>
+                <p>Создан: {new Date(selectedItem.creationDate).toGMTString()}</p>
+                <p>Статус: {statusMap[selectedItem.status]}</p>
+                <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
+                    {selectedItem.tags.map((tag) => (
+                        <Chip label={tag} color="primary"  size="small" />
+                    ))}
+                </Stack>
                 {
                     cardImages.map((x) => {
                         return (

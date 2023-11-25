@@ -25,6 +25,10 @@
     @mixin scroll;
 }
 
+.reportCard p {
+    padding: 0px;
+}
+
 .reportCard img {
     padding-bottom: 10px;
 }
