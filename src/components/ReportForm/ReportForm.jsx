@@ -1,6 +1,3 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db } from "../../firebaseConfig";
 import { login } from "../../redux/user/userSlice";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -72,13 +69,13 @@ const ReportForm = () => {
         body: JSON.stringify({
           title: title,
           message: message,
-          content: images,
-          tags: tags,
           responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          tags: tags ? tags : [],
           location: location,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
         },
       });
 
@@ -137,6 +134,7 @@ const ReportForm = () => {
           disablePortal
           options={serviceList.map((item) => ({ label: item }))}
           fullWidth
+          value={service}
           renderInput={(params) => <TextField {...params} label="Категория" />}
           onChange={(e) => setService(e.target.value)}
         />
@@ -149,10 +147,11 @@ const ReportForm = () => {
           options={tagList.map((item) => ({ label: item }))}
           getOptionLabel={(option) => option.label}
           filterSelectedOptions
+          values={tags}
           renderInput={(params) => (
             <TextField {...params} label="Теги" placeholder="Тег" />
           )}
-          onChange={(e) => setTags(e.target.value)}
+          onChange={(event, values) => setTags(values.map(v => v.label))}
         />
       </Box>
 
