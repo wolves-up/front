@@ -66,7 +66,7 @@ const ReportForm = () => {
     try {
       const imgs = await Promise.all(images.map(async i => {
         console.log(i);
-        const data = i.data
+        const data = await i.arrayBuffer()
         const res = await fetch("http://46.146.211.12:25540/content", {
           method: "POST",
           body: data,
@@ -84,7 +84,7 @@ const ReportForm = () => {
         title: title,
         message: message,
         responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        tags: tags ? tags : [],
+        tags: tags ? tags.map(x => x.label) : [],
         contentIds: imgs ? imgs : [],
       };
       if(placemark && placemark[0] > 0) {
@@ -107,7 +107,7 @@ const ReportForm = () => {
       console.log(jsonRes);
 
       setSnackbarMessage("Обращение отправлено!");
-      navigate('/news');
+      navigate('/map');
     } catch (err) {
       console.log(err);
       setSnackbarMessage("Ошибка");
