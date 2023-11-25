@@ -42,19 +42,35 @@ const ReportForm = () => {
     "Отходы",
   ];
 
-  const serviceList = ["Вода", "Свет", "Газ", "Отопление", "Улица", "Другое"];
+  const [serviceList, setPlacemarks] = useState([]);
+
+  useEffect(() => {
+    (async() => {
+      const res = await fetch(`http://46.146.211.12:25540/utilities`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        },
+      });
+      const resJson = await res.json();
+      console.log(res);
+      setPlacemarks(resJson);
+    })()
+  }, []);
 
   const tagOptions = tagList.map((item) => ({ label: item }));
 
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [service, setService] = useState({'label':'Вода'});
+  const [service, setService] = useState({'label':'Выберите службу'});
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [placemark, setPlacemark] = useState([0,0]);
+  const [responsibleServiceId, setResponsibleServiceId] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,7 +99,7 @@ const ReportForm = () => {
       const body = {
         title: title,
         message: message,
-        responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        responsibleServiceId: responsibleServiceId,
         tags: tags ? tags.map(x => x.label) : [],
         contentIds: imgs ? imgs : [],
       };
@@ -157,13 +173,13 @@ const ReportForm = () => {
       <Box mb={2}>
         <Autocomplete
           disablePortal
-          options={serviceList.map((item) => ({ label: item }))}
+          options={serviceList.map((item) => ({ label: item.name, id: item.id}))}
           getOptionLabel={(option) => option.label}
           isOptionEqualToValue ={(option, value) => { return option.label === value.label}}
           fullWidth
           value={service}
           renderInput={(params) => <TextField {...params} label="Категория" />}
-          onChange={(e, v) => setService(v)}
+          onChange={(e, v) => {setService(v); setResponsibleServiceId(v.id)} }
         />
       </Box>
 
