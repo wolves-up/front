@@ -42,8 +42,6 @@ const NewsArticleForm = () => {
     "Отходы",
   ];
 
-  const serviceList = ["Вода", "Свет", "Газ", "Отопление", "Улица", "Другое"];
-
   const tagOptions = tagList.map((item) => ({ label: item }));
 
   const [title, setTitle] = useState("");
@@ -59,6 +57,24 @@ const NewsArticleForm = () => {
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [placemark, setPlacemark] = useState([0,0]);
+
+  const [serviceList, setPlacemarks] = useState([]);
+  const [responsibleServiceId, setResponsibleServiceId] = useState("");
+
+  useEffect(() => {
+    (async() => {
+      const res = await fetch(`http://46.146.211.12:25540/utilities`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        },
+      });
+      const resJson = await res.json();
+      console.log(res);
+      setPlacemarks(resJson);
+    })()
+  }, []);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -198,13 +214,13 @@ const NewsArticleForm = () => {
       <Box mb={2}>
         <Autocomplete
           disablePortal
-          options={serviceList.map((item) => ({ label: item }))}
+          options={serviceList.map((item) => ({ label: item.name, id: item.id}))}
           getOptionLabel={(option) => option.label}
           isOptionEqualToValue ={(option, value) => { return option.label === value.label}}
           fullWidth
           value={service}
           renderInput={(params) => <TextField {...params} label="Категория" />}
-          onChange={(e, v) => setService(v)}
+          onChange={(e, v) => {setService(v); setResponsibleServiceId(v.id)} }
         />
       </Box>
 

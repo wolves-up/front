@@ -5,7 +5,6 @@ import LoginForm from "./components/LoginForm/LoginForm";
 import NotFoundPage from "./pages/NotFoundPage";
 import RequireAuth from "./pages/RequireAuth";
 import RequireUnauth from "./pages/RequireUnauth";
-import Dashboard from "./components/Dashboard/Dashboard";
 import RecipeInfo from "./components/RecipeInfo/RecipeInfo";
 import AddRecipe from "./components/AddRecipe/AddRecipe";
 import Recipes from "./components/Recipes/Recipes";
