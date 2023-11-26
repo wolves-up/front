@@ -9,6 +9,7 @@ import cn from "classnames";
 import { storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Typography } from "@mui/material";
+import Markdown from "react-markdown";
 
 const NewsArticleFull = () => {
   const { id } = useParams();
@@ -43,7 +44,9 @@ const NewsArticleFull = () => {
         <header
           className={styles.recipePage__header}
           style={{
-            backgroundImage: articleData?.headerContentId && `url(http://46.146.211.12:25540/content/${articleData?.headerContentId})`,
+            backgroundImage:
+              articleData?.headerContentId &&
+              `url(http://46.146.211.12:25540/content/${articleData?.headerContentId})`,
           }}
         >
           <div className={styles.recipe__data}>
@@ -58,17 +61,18 @@ const NewsArticleFull = () => {
               {new Date(articleData.createDate).toGMTString()}
             </Typography>
           )}
-          <div>{articleData?.shortBody}</div>
-          <div>{articleData?.body}</div>
+          <Markdown>{articleData?.shortBody}</Markdown>
+          <Markdown>{articleData?.body}</Markdown>
 
-          {
-            articleData?.contentIds &&
+          {articleData?.contentIds &&
             articleData.contentIds.map((x) => {
-                return (
-                    <img width="100%" src={`http://46.146.211.12:25540/content/${x}`}></img>
-                );
-            })
-          }
+              return (
+                <img
+                  width="100%"
+                  src={`http://46.146.211.12:25540/content/${x}`}
+                ></img>
+              );
+            })}
         </div>
       </div>
     </>
