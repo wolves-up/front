@@ -9,6 +9,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  Skeleton,
   Stack,
   TextField,
   Typography,
@@ -29,38 +30,44 @@ const Report = ({
   message,
 }) => {
   const [utilityService, setUtilityService] = useState(undefined);
-  const [userName, setUserName] = useState(userId);
+  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`http://46.146.211.12:25540/utilities/${category}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
-        },
-      });
+      const res = await fetch(
+        `http://46.146.211.12:25540/utilities/${category}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
       let resJson = await res.json();
-      
+
       setUtilityService(resJson);
     })();
-  }, [])
+  }, []);
 
   useEffect(() => {
     (async () => {
       console.log(userId);
-      const res = await fetch(`http://46.146.211.12:25540/users/get-by-id/${userId}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
-        },
-      });
+      const res = await fetch(
+        `http://46.146.211.12:25540/users/get-by-id/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
       let resJson = await res.json();
       console.log(resJson);
       setUserName(resJson.requisites.emailAddress);
     })();
-  }, [])
+  }, []);
 
   const statuses = {
     0: "Новый",
@@ -100,17 +107,25 @@ const Report = ({
             display: "flex",
             overflow: "hidden",
             "& .MuiCardHeader-content": {
-              overflow: "hidden"
-            }
+              overflow: "hidden",
+            },
           }}
           avatar={
-            <Avatar sx={{ bgcolor: "red" }}>{userName ? userName[0] : "A"}</Avatar>
+            <Avatar sx={{ bgcolor: "red" }}>
+              {userName ? userName[0].toUpperCase() : ""}
+            </Avatar>
           }
-          title={userName || `user-${userId.slice(0, 10)}`}
+          title={
+            userName || <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+          }
           subheader={date}
         />
         <CardContent>
-          {utilityService && (<Box mb={1}><Chip label={utilityService.name} color="primary" size="small" /></Box>)}
+          {utilityService && (
+            <Box mb={1}>
+              <Chip label={utilityService.name} color="primary" size="small" />
+            </Box>
+          )}
           <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
             {tags.map((tag) => (
               <Chip
@@ -122,44 +137,33 @@ const Report = ({
             ))}
           </Stack>
 
-          <Typography variant="h6" mb={1}
+          <Typography
+            variant="h6"
+            mb={1}
             sx={{
               display: "flex",
               overflow: "hidden",
               "& .MuiCardHeader-content": {
-                overflow: "hidden"
-              }
-            }}>
+                overflow: "hidden",
+              },
+            }}
+          >
             {title}
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            {message.length <= 200 ? message : message.substr(0, 197)+'...'}
+            {message.length <= 200 ? message : message.substr(0, 197) + "..."}
           </Typography>
         </CardContent>
       </Box>
-      <CardActions sx={{ justifyContent: "space-between" }}>
+
+      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Chip
           label={statuses[status]}
           color={statusToColor[status]}
           variant="filled"
         />
         <Button onClick={(e) => navigate(`/reports/${id}`)}>Подробнее</Button>
-
-        <Button onClick={(e) => {
-          (async() => { 
-            
-            console.log('DELETE');
-            const res = await fetch(`http://46.146.211.12:25540/reports/${id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "Authorization": `Bearer ${localStorage.getItem('access_token')}`
-              },
-            });
-            navigate('/reports')
-          })();
-        }}>Удалить</Button>
       </CardActions>
     </Card>
   );
