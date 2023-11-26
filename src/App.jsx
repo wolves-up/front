@@ -17,6 +17,7 @@ import Reports from "./components/Reports/Reports";
 import News from "./components/News/News";
 import NewsArticleFull from "./components/NewsArticleFull/NewsArticleFull"
 import NewsArticleForm from "./components/NewsArticleForm/NewsArticleForm";
+import ReportFull from "./components/ReportFull/ReportFull";
 
 function App() {  
   return (
@@ -65,15 +66,27 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/map" element={
-            <RequireAuth>
-              <ReportsMap/>
-            </RequireAuth>} />
+          <Route
+            path="/map"
+            element={
+              <RequireAuth>
+                <ReportsMap />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/reports"
             element={
               <RequireAuth>
                 <Reports />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/reports/:id"
+            element={
+              <RequireAuth>
+                <ReportFull />
               </RequireAuth>
             }
           />

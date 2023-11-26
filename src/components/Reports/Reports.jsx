@@ -12,7 +12,7 @@ const Reports = () => {
           method: "GET",
           headers: {
             "Content-type": "application/json; charset=UTF-8",
-            "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
         const jsonRes = await res.json();
@@ -29,6 +29,7 @@ const Reports = () => {
     <Stack direction="row" gap={2} flexWrap="wrap">
       {reports.map((rep) => (
         <Report
+          id={rep.id}
           name={rep.name}
           title={rep.title}
           message={rep.message}

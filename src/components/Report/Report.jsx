@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Report = ({
+  id,
   name,
   title,
   date,
@@ -26,13 +27,13 @@ const Report = ({
   message,
 }) => {
   const statuses = {
-    0: 'Новый',
-    1: 'В очереди',
-    2: 'В работе',
-    3: 'Переоткрыт',
-    4: 'Завершен',
-    5: 'В архиве',
-    6: 'Удалён'
+    0: "Новый",
+    1: "В очереди",
+    2: "В работе",
+    3: "Переоткрыт",
+    4: "Завершен",
+    5: "В архиве",
+    6: "Удалён",
   };
   const statusToColor = {
     0: "success",
@@ -95,7 +96,7 @@ const Report = ({
           color={statusToColor[status]}
           variant="filled"
         />
-        <Button onClick={(e) => navigate(`/reports/${name}`)}>Подробнее</Button>
+        <Button onClick={(e) => navigate(`/reports/${id}`)}>Подробнее</Button>
       </CardActions>
     </Card>
   );
