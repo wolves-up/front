@@ -23,6 +23,7 @@ import styles from './ReportsMap.module.css';
 const ReportsMap = () => {
   const [placemarks, setPlacemarks] = useState([]);
   const [placemarksNews, setNewsPlacemarks] = useState([]);
+  const [placemarksGarbages, setGarbagesPlacemarks] = useState([]);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const ReportsMap = () => {
             setCardImages(report.contentIds ?? []);
         }}
         options={
-            {'preset': report.isNews ? 'islands#blueDotIcon' : 'islands#brownDotIcon' }
+            {'preset': report.isNews ? 'islands#blueDotIcon' : report.isInfrastructure ? 'islands#blackIcon' : 'islands#brownDotIcon' }
         }
         >
       </Placemark>
@@ -70,6 +71,31 @@ const ReportsMap = () => {
       resJson = resJson.map((x) => { x['isNews']=false; return x;}).filter(x => x.location?.latitude);
       console.log(resJson);
       setPlacemarks(resJson);
+    })()
+  }, [])
+
+  useEffect(() => {
+    (async() => {
+      /*const user = await fetch(`http://46.146.211.12:25540/users/get-user`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        }
+      });
+      const userJson = await user.json();*/
+    
+      const res = await fetch(`http://46.146.211.12:25540/infrastructure/get-all`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        },
+      });
+      let resJson = await res.json();
+      resJson = resJson.map((x) => { x['isNews']=false; x['isInfrastructure']=true; return x;}).filter(x => x.location?.latitude);
+      console.log(resJson);
+      setGarbagesPlacemarks(resJson);
     })()
   }, [])
 
@@ -124,7 +150,15 @@ const ReportsMap = () => {
                 {selectedItem.headerContentId && (<img width="100%" src={`http://46.146.211.12:25540/content/${selectedItem.headerContentId}`} alt=""></img>)}
             </div>
         </div>)}
-        {selectedItem && !selectedItem.isNews &&
+        {selectedItem && selectedItem.isInfrastructure &&
+        (<div className={styles.rightSidebar}>
+            <div className={styles.reportCard}>
+                <h3>{selectedItem.name}</h3>
+                <h3>{selectedItem.utilityServiceName}</h3>
+                <p>{selectedItem.text}</p>
+            </div>
+        </div>)}
+        {selectedItem && !selectedItem.isNews && !selectedItem.isInfrastructure &&
         (<div className={styles.rightSidebar}>
             <div className={styles.reportCard}>
                 <h3>{selectedItem.title}</h3>
@@ -159,6 +193,7 @@ const ReportsMap = () => {
         >
             {placemarks.map(p => createPlaceMark(p))}
             {placemarksNews.map(p => createPlaceMark(p))}
+            {placemarksGarbages.map(p => createPlaceMark(p))}
         </Map>
     </div>
   );
