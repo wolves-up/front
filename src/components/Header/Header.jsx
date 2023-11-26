@@ -8,7 +8,7 @@ const Header = ({loginButtonRequired}) => {
   return (
     <header className={cn('container', styles.header)}>
       <Link to={'/'}>
-        <img src={logo} alt="My healthy plate logo" />
+        Навигатор чистоты
       </Link>
       {loginButtonRequired && <ButtonLink link={'/login'}>Log In</ButtonLink>}
     </header>

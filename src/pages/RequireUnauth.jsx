@@ -6,20 +6,17 @@ import NavBar from "../components/NavBar/NavBar";
 import HeaderAuth from "../components/HeaderAuth/HeaderAuth";
 import { Navigate } from "react-router-dom";
 
-const RequireUnauth = ({children, loginButtonRequired}) => {
-  const user = localStorage.getItem('access_token');
+const RequireUnauth = ({ children, loginButtonRequired }) => {
+  const user = localStorage.getItem("access_token");
   if (user) {
-    return <Navigate replace to="/" />;
+    return <Navigate replace to="/news" />;
   }
   return (
-    <div className="container flex-wrapper">
-      <NavBar />
-      <div class="page-content">
-        <HeaderAuth />
-        {children}
-      </div>
-    </div>
+    <>
+      <Header loginButtonRequired={loginButtonRequired} />
+      <main className="container">{children}</main>
+    </>
   );
-}
+};
 
 export default RequireUnauth;

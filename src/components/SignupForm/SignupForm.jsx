@@ -82,10 +82,10 @@ const SignupForm = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <h2 className={styles.form__header}>
-        Create a new account!
+        Регистрация
       </h2>
       
-      <div className={styles.form__item}>Email <span className={styles.input_required}>*</span></div>
+      <div className={styles.form__item}>Эл. почта <span className={styles.input_required}>*</span></div>
       <input 
         type="email" 
         className={cn(styles.input, styles.form__item)}
@@ -95,7 +95,7 @@ const SignupForm = () => {
         onChange={handleEmailChange}
       />
 
-      <div className={styles.form__item}>Password <span className={styles.input_required}>*</span></div>
+      <div className={styles.form__item}>Пароль <span className={styles.input_required}>*</span></div>
       <input 
         type="password" 
         className={cn(styles.input, styles.form__item)}
@@ -105,7 +105,7 @@ const SignupForm = () => {
         onChange={handlePasswordChange}
       />
 
-      <div className={styles.form__item}>Confirm password <span className={styles.input_required}>*</span></div>
+      <div className={styles.form__item}>Подтвердите пароль <span className={styles.input_required}>*</span></div>
       <input 
         type="password" 
         className={cn(styles.input, styles.form__item)}
@@ -120,12 +120,12 @@ const SignupForm = () => {
         variant={{isPrimary: true}}
         disabled={loading}
       >
-        SIGN UP
+        Зарегистрироваться
       </Button>
 
       <div className={styles.login_signup_link}>
-        <div className={styles.login_signup_link__header}>Already registered?</div> 
-        <ButtonLink link="/login">Log in</ButtonLink>
+        <div className={styles.login_signup_link__header}>Есть аккаунт?</div> 
+        <ButtonLink link="/login">Вход</ButtonLink>
       </div>
 
       { error && <div className={styles.error}>{ error }</div> }

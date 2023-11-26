@@ -49,10 +49,10 @@ const LoginForm = () => {
   return (
       <Form onSubmit={handleSubmit}>
         <h2 className={styles.form__header}>
-          Welcome back!
+          Вход
         </h2>
 
-        <div className={styles.form__item}>Email</div>
+        <div className={styles.form__item}>Эл. почта</div>
         <input 
           type="email" 
           className={cn(styles.input, styles.form__item)}
@@ -62,7 +62,7 @@ const LoginForm = () => {
           onChange={handleEmailChange}
         />
 
-        <div className={styles.form__item}>Password</div>
+        <div className={styles.form__item}>Пароль</div>
         <input 
           type="password" 
           className={cn(styles.input, styles.form__item)}
@@ -77,12 +77,12 @@ const LoginForm = () => {
           variant={{isPrimary: true}}
           disabled={loading}
         >
-          LOG IN
+          Войти
         </Button>
 
         <div className={styles.login_signup_link}>
-          <div className={styles.login_signup_link__header}>Don`t have an account?</div> 
-          <ButtonLink link="/signup">Sign up</ButtonLink>
+          <div className={styles.login_signup_link__header}>Нет аккаунта?</div> 
+          <ButtonLink link="/signup">Регистрация</ButtonLink>
         </div>
 
         { error && <div className={styles.error}>{ error }</div> }
