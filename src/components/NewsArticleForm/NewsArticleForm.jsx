@@ -301,8 +301,8 @@ const NewsArticleForm = () => {
           {center: [56.84, 60.60],
           zoom: 9}
         }
-        width={450}
-        height={450}
+        width={950}
+        height={430}
         onClick={(e) => {
           const coords = e.get('coords');
           setPlacemark(coords);
