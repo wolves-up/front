@@ -120,7 +120,7 @@ const NewsArticleForm = () => {
         body: body,
         shortBody: shortBody,
 
-        responsibleServiceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        responsibleServiceId: responsibleServiceId,
         tags: tags ? tags.map(x => x.label) : [],
         bodyContentIds: imgs ? imgs : [],
         headerContentId: headerImageId ?? undefined,
