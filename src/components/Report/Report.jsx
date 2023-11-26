@@ -146,20 +146,6 @@ const Report = ({
         />
         <Button onClick={(e) => navigate(`/reports/${id}`)}>Подробнее</Button>
 
-        <Button onClick={(e) => {
-          (async() => { 
-            
-            console.log('DELETE');
-            const res = await fetch(`http://46.146.211.12:25540/reports/${id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "Authorization": `Bearer ${localStorage.getItem('access_token')}`
-              },
-            });
-            navigate('/reports')
-          })();
-        }}>Удалить</Button>
       </CardActions>
     </Card>
   );
