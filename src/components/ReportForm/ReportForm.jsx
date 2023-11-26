@@ -152,6 +152,7 @@ const ReportForm = () => {
           label="Заголовок"
           variant="outlined"
           required
+          inputProps={{ maxLength: 100 }}
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -163,6 +164,7 @@ const ReportForm = () => {
           variant="outlined"
           multiline
           fullWidth
+          inputProps={{ maxLength: 400 }}
           required
           minRows={3}
           maxRows={3}

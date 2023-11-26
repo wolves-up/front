@@ -28,6 +28,8 @@ const Report = ({
   message,
 }) => {
   const [utilityService, setUtilityService] = useState(undefined);
+  const [userName, setUserName] = useState(userId);
+
   useEffect(() => {
     (async () => {
       const res = await fetch(`http://46.146.211.12:25540/utilities/${category}`, {
@@ -40,6 +42,22 @@ const Report = ({
       let resJson = await res.json();
       
       setUtilityService(resJson);
+    })();
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      console.log(userId);
+      const res = await fetch(`http://46.146.211.12:25540/users/get-by-id/${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        },
+      });
+      let resJson = await res.json();
+      console.log(resJson);
+      setUserName(resJson.requisites.emailAddress);
     })();
   }, [])
 
@@ -85,9 +103,9 @@ const Report = ({
             }
           }}
           avatar={
-            <Avatar sx={{ bgcolor: "red" }}>{name ? name[0] : "A"}</Avatar>
+            <Avatar sx={{ bgcolor: "red" }}>{userName ? userName[0] : "A"}</Avatar>
           }
-          title={name || `user-${userId.slice(0, 10)}`}
+          title={userName || `user-${userId.slice(0, 10)}`}
           subheader={date}
         />
         <CardContent>

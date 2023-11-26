@@ -181,6 +181,7 @@ const NewsArticleForm = () => {
           variant="outlined"
           required
           fullWidth
+          inputProps={{ maxLength: 100 }}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -192,6 +193,7 @@ const NewsArticleForm = () => {
           multiline
           fullWidth
           required
+          inputProps={{ maxLength: 250 }}
           minRows={3}
           maxRows={3}
           value={shortBody}
