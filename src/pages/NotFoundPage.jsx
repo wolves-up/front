@@ -5,7 +5,7 @@ const NotFoundPage = () => {
     <>
     <Header />
     <main className="container">
-      <h2>This page does not exist :(</h2>
+      <h2>Страница не найдена</h2>
     </main>
     </>
   );

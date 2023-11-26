@@ -1,5 +1,6 @@
 .iconWrapper {
   width: 45px;
+  flex-shrink: 0;
 }
 
 .li {
