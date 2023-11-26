@@ -116,9 +116,7 @@ const Report = ({
             </Avatar>
           }
           title={
-            userName || (
-              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
-            )
+            userName || <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
           }
           subheader={date}
         />
@@ -159,15 +157,13 @@ const Report = ({
         </CardContent>
       </Box>
 
-      <CardActions>
+      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Chip
           label={statuses[status]}
           color={statusToColor[status]}
           variant="filled"
         />
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Button onClick={(e) => navigate(`/reports/${id}`)}>Подробнее</Button>
-
+        <Button onClick={(e) => navigate(`/reports/${id}`)}>Подробнее</Button>
       </CardActions>
     </Card>
   );
