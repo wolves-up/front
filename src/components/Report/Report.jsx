@@ -27,6 +27,22 @@ const Report = ({
   images,
   message,
 }) => {
+  const [utilityService, setUtilityService] = useState(undefined);
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(`http://46.146.211.12:25540/utilities/${category}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        },
+      });
+      let resJson = await res.json();
+      
+      setUtilityService(resJson);
+    })();
+  }, [])
+
   const statuses = {
     0: "Новый",
     1: "В очереди",
@@ -68,9 +84,7 @@ const Report = ({
           subheader={date}
         />
         <CardContent>
-          <Box mb={1}>
-            <Chip label={category} color="primary" size="small" />
-          </Box>
+          {utilityService && (<Box mb={1}><Chip label={utilityService.name} color="primary" size="small" /></Box>)}
           <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
             {tags.map((tag) => (
               <Chip
@@ -87,7 +101,7 @@ const Report = ({
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            {message}
+            {message.length <= 200 ? message : message.substr(0, 197)+'...'}
           </Typography>
         </CardContent>
       </Box>

@@ -6,6 +6,7 @@ import {
     Autocomplete,
     Avatar,
     Box,
+    Button,
     Card,
     CardActions,
     CardContent,
@@ -21,6 +22,7 @@ import styles from './ReportsMap.module.css';
 
 const ReportsMap = () => {
   const [placemarks, setPlacemarks] = useState([]);
+  const [placemarksNews, setNewsPlacemarks] = useState([]);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,6 +37,9 @@ const ReportsMap = () => {
             setSelectedItem(report);
             setCardImages(report.contentIds ?? []);
         }}
+        options={
+            {'preset': report.isNews ? 'islands#blueDotIcon' : 'islands#brownDotIcon' }
+        }
         >
       </Placemark>
     );
@@ -61,18 +66,32 @@ const ReportsMap = () => {
           "Authorization": `Bearer ${localStorage.getItem('access_token')}`
         },
       });
-      const resJson = await res.json();
+      let resJson = await res.json();
+      resJson = resJson.map((x) => { x['isNews']=false; return x;}).filter(x => x.location?.latitude);
       console.log(resJson);
-      setPlacemarks(resJson.filter(x => x.location));
+      setPlacemarks(resJson);
     })()
   }, [])
 
   useEffect(() => {
-    (async () => {
+    (async() => {
+      const res = await fetch(`http://46.146.211.12:25540/news/get-all`, {
+        method: "GET",
+        /*body: JSON.stringify({
+          'userId': userJson["id"]
+        }),*/
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+        },
+      });
+      let resJson = await res.json();
+      resJson = resJson.map((x) => { x['isNews']=true; return x;}).filter(x => x.location?.latitude);
+      console.log(resJson);
+      setNewsPlacemarks(resJson);
+    })()
+  }, [])
 
-    })();
-  }, [selectedItem])
-  
   const [cardImages, setCardImages] = useState([]);
 
   const statusMap = {
@@ -87,11 +106,32 @@ const ReportsMap = () => {
 
   return (
     <div>
-        {selectedItem &&
+        {/* Новость */}
+        {selectedItem?.isNews &&
+        (<div className={styles.rightSidebar}>
+            <div className={styles.reportCard}>
+                <h3>{selectedItem.title}</h3>
+                <p>{selectedItem.shortBody}</p>
+                <p>
+                <Button onClick={(e) => navigate(`/news/${selectedItem.id}`)}>Подробнее</Button>
+                </p>
+                <p>Создан: {new Date(selectedItem.createDate).toGMTString()}</p>
+                <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
+                    {selectedItem.tags.map((tag) => (
+                        <Chip label={tag} color="primary"  size="small" />
+                    ))}
+                </Stack>
+                {selectedItem.headerContentId && (<img width="100%" src={`http://46.146.211.12:25540/content/${selectedItem.headerContentId}`} alt=""></img>)}
+            </div>
+        </div>)}
+        {selectedItem && !selectedItem.isNews &&
         (<div className={styles.rightSidebar}>
             <div className={styles.reportCard}>
                 <h3>{selectedItem.title}</h3>
                 <p>{selectedItem.message}</p>
+                <p>
+                <Button onClick={(e) => navigate(`/reports/${selectedItem.id}`)}>Подробнее</Button>
+                </p>
                 <p>Создан: {new Date(selectedItem.creationDate).toGMTString()}</p>
                 <p>Статус: {statusMap[selectedItem.status]}</p>
                 <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
@@ -102,7 +142,7 @@ const ReportsMap = () => {
                 {
                     cardImages.map((x) => {
                         return (
-                            <img width="100%" src={`http://46.146.211.12:25540/content/${x}`}></img>
+                            <img width="100%" src={`http://46.146.211.12:25540/content/${x}`} alt=""></img>
                         );
                     })
                 }
@@ -118,6 +158,7 @@ const ReportsMap = () => {
         onClick={(e) => {setSelectedItem(undefined)}}
         >
             {placemarks.map(p => createPlaceMark(p))}
+            {placemarksNews.map(p => createPlaceMark(p))}
         </Map>
     </div>
   );
