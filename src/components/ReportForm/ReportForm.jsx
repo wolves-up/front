@@ -77,6 +77,8 @@ const ReportForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (loading)
+      return;
     setLoading(true);
 
     try {
