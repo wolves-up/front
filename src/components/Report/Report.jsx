@@ -23,13 +23,23 @@ const Report = ({
   images,
   message,
 }) => {
-  const statuses = useMemo(() => ["Новое", "В работе", "Завершено"]);
-  const [newStatus, setNewStatus] = useState(statuses[status]);
-
-  const handleStatusChange = (e) => {
-    setNewStatus(e.target.value);
-    console.log(e.target.value);
-    // fetch    
+  const statuses = {
+    0: 'Новый',
+    1: 'В очереди',
+    2: 'В работе',
+    3: 'Переоткрыт',
+    4: 'Завершен',
+    5: 'В архиве',
+    6: 'Удалён'
+  };
+  const statusToColor = {
+    0: "success",
+    1: "info",
+    2: "secondary",
+    3: "primary",
+    4: "warning",
+    5: "default",
+    6: "error",
   };
 
   return (
@@ -58,13 +68,7 @@ const Report = ({
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Autocomplete
-          options={statuses.map((item) => ({ label: item }))}
-          value={newStatus}
-          fullWidth
-          onChange={handleStatusChange}
-          renderInput={(params) => <TextField {...params} label="Статус" />}
-        />
+        <Chip label={statuses[status]} color={statusToColor[status]} variant="filled" />
       </CardActions>
     </Card>
   );
