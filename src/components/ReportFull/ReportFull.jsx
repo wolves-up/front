@@ -55,7 +55,7 @@ const ReportFull = () => {
               </h1>
             </div>
             <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
-              {articleData?.tags.map((tag) => (
+              {articleData?.tags && articleData?.tags.map((tag) => (
                 <Chip
                   label={tag}
                   color="primary"
