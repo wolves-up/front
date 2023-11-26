@@ -27,11 +27,12 @@
 .recipePage__title {
   display: flex;
   align-items: center;
-  width: 90%;
+  width: 100%;
   min-height: 60px;
   margin: 15px 0;
   font-size: 32px;
   font-weight: bold;
+  overflow: hidden;
 }
 
 .recipePage__difficulty, .recipePage__time {
@@ -52,6 +53,8 @@
 
 .recipePage__main {
   padding: 20px;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .section__header {
