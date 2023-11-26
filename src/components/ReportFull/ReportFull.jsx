@@ -8,7 +8,8 @@ import Modal from "react-bootstrap/Modal";
 import cn from "classnames";
 import { storage } from "../../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { Chip, Stack, Typography } from "@mui/material";
+import { Box, Chip, Stack, Typography } from "@mui/material";
+import { YMaps, Map, useYMaps, Placemark } from "@pbe/react-yandex-maps";
 
 const ReportFull = () => {
   const { id } = useParams();
@@ -16,6 +17,16 @@ const ReportFull = () => {
   const navigate = useNavigate();
 
   const [articleData, setArticleData] = useState({});
+
+  
+  const createPlaceMark = (loc) => {
+    const location = [loc["latitude"], loc["longitude"]];
+    return (
+      <Placemark
+        geometry={location}
+      ></Placemark>
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,14 +66,15 @@ const ReportFull = () => {
               </h1>
             </div>
             <Stack direction="row" flexWrap="wrap" gap={0.5} mb={2}>
-              {articleData?.tags && articleData?.tags.map((tag) => (
-                <Chip
-                  label={tag}
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                />
-              ))}
+              {articleData?.tags &&
+                articleData?.tags.map((tag) => (
+                  <Chip
+                    label={tag}
+                    color="primary"
+                    variant="outlined"
+                    size="small"
+                  />
+                ))}
             </Stack>
           </div>
         </header>
@@ -73,7 +85,23 @@ const ReportFull = () => {
             </Typography>
           )}
           <div>{articleData?.message}</div>
-
+          {articleData?.location && (
+            <Box mt={1} mb={1}>
+              <Map
+                defaultState={{
+                  center: [
+                    articleData.location.latitude,
+                    articleData.location.longitude,
+                  ],
+                  zoom: 15,
+                }}
+                width={300}
+                height={300}
+              >
+                {createPlaceMark(articleData.location)}
+              </Map>
+            </Box>
+          )}
           {articleData?.contentIds &&
             articleData.contentIds.map((x) => {
               return (
