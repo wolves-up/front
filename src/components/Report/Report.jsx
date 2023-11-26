@@ -77,6 +77,13 @@ const Report = ({
     >
       <Box>
         <CardHeader
+          sx={{
+            display: "flex",
+            overflow: "hidden",
+            "& .MuiCardHeader-content": {
+              overflow: "hidden"
+            }
+          }}
           avatar={
             <Avatar sx={{ bgcolor: "red" }}>{name ? name[0] : "A"}</Avatar>
           }
@@ -96,7 +103,14 @@ const Report = ({
             ))}
           </Stack>
 
-          <Typography variant="h6" mb={1}>
+          <Typography variant="h6" mb={1}
+            sx={{
+              display: "flex",
+              overflow: "hidden",
+              "& .MuiCardHeader-content": {
+                overflow: "hidden"
+              }
+            }}>
             {title}
           </Typography>
 

@@ -99,7 +99,7 @@ const ReportForm = () => {
       const body = {
         title: title,
         message: message,
-        responsibleServiceId: responsibleServiceId,
+        responsibleServiceId: (responsibleServiceId ?? "") === "" ? undefined : responsibleServiceId,
         tags: tags ? tags.map(x => x.label) : [],
         contentIds: imgs ? imgs : [],
       };
