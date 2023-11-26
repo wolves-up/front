@@ -30,6 +30,7 @@ const Reports = () => {
       {reports.map((rep) => (
         <Report
           id={rep.id}
+          userId={rep.userId}
           name={rep.name}
           title={rep.title}
           message={rep.message}

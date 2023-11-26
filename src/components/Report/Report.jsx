@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Report = ({
+  userId,
   id,
   name,
   title,
@@ -63,7 +64,7 @@ const Report = ({
           avatar={
             <Avatar sx={{ bgcolor: "red" }}>{name ? name[0] : "A"}</Avatar>
           }
-          title={name}
+          title={name || `user-${userId.slice(0, 10)}`}
           subheader={date}
         />
         <CardContent>
