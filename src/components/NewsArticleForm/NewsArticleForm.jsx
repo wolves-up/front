@@ -222,7 +222,13 @@ const NewsArticleForm = () => {
           fullWidth
           value={service}
           renderInput={(params) => <TextField {...params} label="Категория" />}
-          onChange={(e, v) => {setService(v); setResponsibleServiceId(v.id)} }
+          onChange={(e, v) => {
+            if (v != null && v != undefined)
+            {
+              setService(v); 
+              setResponsibleServiceId(v.id)
+            }
+          } }
         />
       </Box>
 
