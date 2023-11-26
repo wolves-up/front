@@ -15,7 +15,8 @@ const News = () => {
             "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
         },
         });
-        const jsonRes = await res.json();
+        let jsonRes = await res.json()
+        jsonRes = jsonRes.sort((x,y) => x.createDate < y.createDate ? 1 : -1);
         console.log(jsonRes);
         setNews(jsonRes);
       } catch (err) {
