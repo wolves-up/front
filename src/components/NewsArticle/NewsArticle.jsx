@@ -42,7 +42,10 @@ const NewsArticle = ({
         >
           <div className={styles.recipe__data}>
             <div className="flex-wrapper_centered">
-              <h1 className={styles.recipePage__title}>{title}</h1>
+              <h1 className={styles.recipePage__title}
+                style={{
+                  overflow:'hidden'
+                }}>{title}</h1>
             </div>
           </div>
         </header>

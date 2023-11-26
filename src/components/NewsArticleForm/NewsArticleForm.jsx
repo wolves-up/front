@@ -80,7 +80,9 @@ const NewsArticleForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault();    
+    if (loading)
+      return;
     setLoading(true);
 
     try {
