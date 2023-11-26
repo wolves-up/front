@@ -2,8 +2,8 @@ import { login } from "../../redux/user/userSlice";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Form from "../Form/Form";
-import styles from "../Form/Form.module.css";
+import Form from "../NewsForm/NewsForm";
+import styles from "../NewsForm/NewsForm.module.css";
 import {
   Autocomplete,
   Box,
